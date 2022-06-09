@@ -96,18 +96,20 @@ export const Products = (infoProps) => {
           </Row>
         </>
       )}
-      <Row centered>
-        <Col lg="3" md="3" sm="3" xs="9">
-          <PaginationContainer>
-            <img src="https://img.icons8.com/ios/50/undefined/double-left.png" />
+      {productList[0] && (
+        <Row centered>
+          <Col lg="3" md="3" sm="3" xs="9">
+            <PaginationContainer>
+              <img src="https://img.icons8.com/ios/50/undefined/double-left.png" />
 
-            {ProductosMock.page}
-            <span>/</span>
-            {ProductosMock.total_pages}
-            <img src="https://img.icons8.com/ios/50/undefined/double-right.png" />
-          </PaginationContainer>
-        </Col>
-      </Row>
+              {ProductosMock.page}
+              <span>/</span>
+              {ProductosMock.total_pages}
+              <img src="https://img.icons8.com/ios/50/undefined/double-right.png" />
+            </PaginationContainer>
+          </Col>
+        </Row>
+      )}
     </ContainerSpinner>
   );
 };
