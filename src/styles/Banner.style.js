@@ -49,20 +49,22 @@ export const CenteredTextTitle = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   @media (max-width: 480px) {
     font-size: 14px;
-    top: 45%;
+    top: 25%;
+    text-align: center;
+  }
+  @media (min-width: 481px) and (max-width: 768px) {
+    font-size: 19px;
     text-align: center;
   }
   @media (min-width: 768px) and (max-width: 1024px) {
-    top: 80%;
     font-size: 27px;
     text-align: center;
   }
   @media (min-width: 1024px) and (max-width: 2559px) {
-    top: 80%;
     font-size: 30px;
   }
   @media only screen and (min-width: 2560px) {
-    top: 80%;
+    top: 40%;
     font-size: 52px;
   }
 `;
