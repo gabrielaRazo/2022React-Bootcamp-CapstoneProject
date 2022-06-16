@@ -1,0 +1,64 @@
+import * as dashboardActions from '../actions/dashboardActions';
+
+const initialState = {
+  //API ref
+  apiRef: '',
+  //Banner
+  listBanner: [],
+  fetchingBanner: false,
+  //Categories
+  listCategories: [],
+  fetchingCategories: false,
+  selectedCategory: 'decorate',
+  //Products
+  fetchingProducts: false,
+  listProducts: [],
+  filterdProductList: [],
+};
+
+export default (state = initialState, action) => {
+  switch (action.type) {
+    //API ref
+    case dashboardActions.GET_API_REF:
+      return { ...state, apiRef: action.apiRef };
+
+    //Banner
+    case dashboardActions.GET_LIST_BANNER_REQUEST:
+      return { ...state, fetchingBanner: true };
+    case dashboardActions.GET_LIST_BANNER_SUCCESS:
+      return { ...state, fetchingBanner: false, listBanner: action.listBanner };
+    case dashboardActions.GET_LIST_BANNER_FAILURE:
+      return { ...state, fetchingBanner: false };
+
+    //Categories
+    case dashboardActions.GET_LIST_CATEGORIES_REQUEST:
+      return { ...state, fetchingCategories: true };
+    case dashboardActions.GET_LIST_CATEGORIES_SUCCESS:
+      return {
+        ...state,
+        fetchingCategories: false,
+        listCategories: action.listCategories,
+      };
+    case dashboardActions.GET_LIST_CATEGORIES_FAILURE:
+      return { ...state, fetchingCategories: false };
+
+    case dashboardActions.CHANGE_SELECTED_CATEGORY:
+      return { ...state, selectedCategory: action.selectedCategory };
+
+    //Products
+    case dashboardActions.GET_LIST_PRODUCTS_REQUEST:
+      return { ...state, fetchingProducts: true };
+    case dashboardActions.GET_LIST_PRODUCTS_SUCCESS:
+      return {
+        ...state,
+        fetchingProducts: false,
+        listProducts: action.listProducts,
+        filterdProductList: action.filterdProductList,
+      };
+    case dashboardActions.GET_LIST_PRODUCTS_FAILURE:
+      return { ...state, fetchingProducts: false };
+
+    default:
+      return state;
+  }
+};

@@ -15,6 +15,7 @@ export const Card = styled.div`
 export const Img = styled.img`
   max-width: 100%;
   border-radius: 10px;
+  border: 1px solid ${colors.colors.hoverInput};
 `;
 
 export const Text = styled.p`

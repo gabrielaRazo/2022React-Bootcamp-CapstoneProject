@@ -1,11 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Row, TopSpace, SectionTitle, Button } from '../styles/Home.style';
-
-import ProductosMock from '../mocks/en-us/featured-products.json';
 import { Img, Text, TextImage, ContainerImage } from '../styles/Grid.style';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 const GridProductos = () => {
+  const dispatch = useDispatch();
+  const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
+
+  useEffect(() => {
+    dispatch({ type: 'GET_LIST_PRODUCTS_REQUEST', apiRef: apiRef });
+  }, [apiRef]);
+
+  const listProducts = useSelector(
+    (state) => state.dasboardReducer.listProducts,
+  );
+  const fetchingProducts = useSelector(
+    (state) => state.dasboardReducer.fetchingProducts,
+  );
+
+  console.log('listProducts', listProducts.results);
+
   return (
     <div>
       <TopSpace />
@@ -13,20 +28,22 @@ const GridProductos = () => {
       <TopSpace />
 
       <SectionTitle>Products</SectionTitle>
-      <Row centered>
-        {ProductosMock.results.map(
-          ({ data: { mainimage, url, category, name, price } }) => (
-            <Col lg="2" md="3" sm="4" xs="11" spaced>
-              <ContainerImage>
-                <Img src={mainimage.url} alt={url} />
-                <TextImage>{category.slug}</TextImage>
-              </ContainerImage>
-              <Text>{name}</Text>
-              <Text>${price}</Text>
-            </Col>
-          ),
-        )}
-      </Row>
+      {listProducts.results && (
+        <Row centered>
+          {listProducts.results.map(
+            ({ data: { mainimage, url, category, name, price } }) => (
+              <Col lg="2" md="3" sm="4" xs="11" spaced>
+                <ContainerImage>
+                  <Img src={mainimage.url} alt={url} />
+                  <TextImage>{category.slug}</TextImage>
+                </ContainerImage>
+                <Text>{name}</Text>
+                <Text>${price}</Text>
+              </Col>
+            ),
+          )}
+        </Row>
+      )}
       <Row centered>
         <Link to="/products">
           <Button>View all products</Button>

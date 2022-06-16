@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { API_BASE_URL } from '../constants';
 
 const INITIAL_API_METADATA = { ref: null, isLoading: true };
 
 export function useLatestAPI() {
+  const dispatch = useDispatch();
   const [apiMetadata, setApiMetadata] = useState(() => INITIAL_API_METADATA);
 
   useEffect(() => {
@@ -24,7 +26,6 @@ export function useLatestAPI() {
         console.error(err);
       }
     }
-
     getAPIMetadata();
 
     return () => {
