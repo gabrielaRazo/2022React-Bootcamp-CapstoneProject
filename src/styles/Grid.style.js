@@ -5,23 +5,32 @@ export const Card = styled.div`
   background-color: white;
   border-radius: 10px;
   text-align: center;
-  width: 100%;
-  height: 414px;
-  @media (max-width: 480px) {
-    height: 514px;
-  }
+  height: 354px;
+  position: relative;
 `;
 
 export const Img = styled.img`
   max-width: 100%;
+  ${({ products }) =>
+    products &&
+    `
+    height: 210px;
+  `}
+  ${({ border }) =>
+    border &&
+    `
+    border: 1px solid ${colors.colors.hoverInput};
+  `}
+
   border-radius: 10px;
-  border: 1px solid ${colors.colors.hoverInput};
 `;
 
 export const Text = styled.p`
   margin-top: 0;
   text-align: center;
+  text-decoration-color: red;
   font-weight: 300;
+  ${({ top }) => top && `position: absolute;  top: 83%; `};
   color: ${colors.colors.titleBlue};
 `;
 

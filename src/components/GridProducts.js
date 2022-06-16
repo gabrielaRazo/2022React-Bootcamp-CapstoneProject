@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { Col, Row, TopSpace, SectionTitle, Button } from '../styles/Home.style';
-import { Img, Text, TextImage, ContainerImage } from '../styles/Grid.style';
+import {
+  Img,
+  Text,
+  TextImage,
+  ContainerImage,
+  Card,
+} from '../styles/Grid.style';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,11 +40,14 @@ const GridProductos = () => {
             ({ data: { mainimage, url, category, name, price } }) => (
               <Col lg="2" md="3" sm="4" xs="11" spaced>
                 <ContainerImage>
-                  <Img src={mainimage.url} alt={url} />
+                  <Img border src={mainimage.url} alt={url} />
                   <TextImage>{category.slug}</TextImage>
                 </ContainerImage>
                 <Text>{name}</Text>
                 <Text>${price}</Text>
+                <Row centered>
+                  <Button>Add to Cart</Button>
+                </Row>
               </Col>
             ),
           )}
@@ -46,6 +55,7 @@ const GridProductos = () => {
       )}
       <Row centered>
         <Link to="/products">
+          <TopSpace />
           <Button>View all products</Button>
         </Link>
       </Row>

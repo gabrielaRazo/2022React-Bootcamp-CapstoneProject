@@ -92,15 +92,18 @@ export const SectionTitle = styled.h1`
 export const Button = styled.button`
   border-radius: 10px;
   background-color: ${colors.colors.subBlue};
-  border-color: ${colors.colors.subBlue};
+  border: 1px solid ${colors.colors.hoverInput};
   color: white;
   font-size: 14px;
   font-family: 'Montserrat', sans-serif;
   padding: 10px;
+  ${({ bottom }) => bottom && `position: absolute; bottom: 0;`};
+
+  cursor: pointer;
 
   &:hover {
     background-color: ${colors.colors.hoverSubBlue};
-    border-color: ${colors.colors.hoverSubBlue};
+    border: 1px solid ${colors.colors.hoverSubBlue};
   }
 `;
 

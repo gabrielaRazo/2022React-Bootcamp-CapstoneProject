@@ -54,7 +54,11 @@ const GridCategorias = () => {
             {listCategories.results.map(
               ({ data: { main_image, url, name } }) => (
                 <Col lg="2" md="3" sm="4" xs="11" spaced>
-                  <Link to="/products" onClick={() => changeCategory(name)}>
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    to="/products"
+                    onClick={() => changeCategory(name)}
+                  >
                     <Img src={main_image.url} alt={url} />
                     <Text>{name}</Text>
                   </Link>

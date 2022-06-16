@@ -7,11 +7,18 @@ import {
   Spinner,
   ContainerSpinner,
   PaginationContainer,
+  Button,
 } from '../styles/Home.style';
 
 import ProductosMock from '../mocks/en-us/featured-products.json';
 import noResults from '../assets/no-results.png';
-import { Img, Text, TextImage, ContainerImage } from '../styles/Grid.style';
+import {
+  Img,
+  Text,
+  TextImage,
+  ContainerImage,
+  Card,
+} from '../styles/Grid.style';
 import { useDispatch, useSelector } from 'react-redux';
 
 export const Products = () => {
@@ -57,12 +64,17 @@ export const Products = () => {
             {filterdProductList.map(
               ({ data: { mainimage, url, category, name, price } }) => (
                 <Col lg="2" md="3" sm="4" xs="11" spaced>
-                  <ContainerImage>
-                    <Img src={mainimage.url} alt={url} />
-                    <TextImage>{category.slug}</TextImage>
-                  </ContainerImage>
-                  <Text>{name}</Text>
-                  <Text>${price}</Text>
+                  <Card>
+                    <ContainerImage>
+                      <Img products border src={mainimage.url} alt={url} />
+                      <TextImage>{category.slug}</TextImage>
+                    </ContainerImage>
+                    <Text>{name}</Text>
+                    <Row centered>
+                      <Text top>${price}</Text>
+                      <Button bottom>Add to Cart</Button>
+                    </Row>
+                  </Card>
                 </Col>
               ),
             )}
