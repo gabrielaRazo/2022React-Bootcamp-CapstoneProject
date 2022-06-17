@@ -28,7 +28,6 @@ export const Img = styled.img`
 export const Text = styled.p`
   margin-top: 0;
   text-align: center;
-  text-decoration-color: red;
   font-weight: 300;
   ${({ top }) => top && `position: absolute;  top: 83%; `};
   color: ${colors.colors.titleBlue};

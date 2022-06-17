@@ -8,7 +8,7 @@ const controller = new AbortController();
 
 function* listCategoriesDashboard(action) {
   try {
-    console.log(action);
+    //console.log(action);
     const apiRef = action.apiRef;
     const response = yield call(
       axios.get,
@@ -19,7 +19,6 @@ function* listCategoriesDashboard(action) {
         signal: controller.signal,
       },
     );
-    console.log('response categories', response);
 
     if (response.status === 200) {
       const listCategories = response.data;
@@ -46,18 +45,25 @@ function* listProductsDashboard(action) {
   try {
     console.log(action);
     const apiRef = action.apiRef;
+    let page = 1;
+    if (action.page) {
+      page = action.page;
+    }
     const selectedCategory = action.selectedCategory;
+
+    console.log('params', page, selectedCategory);
+
     const response = yield call(
       axios.get,
       `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${encodeURIComponent(
         '[[at(document.type, "product")]]',
-      )}&lang=en-us&pageSize=12`,
+      )}&lang=en-us&page=${page}&pageSize=12`,
       {
         signal: controller.signal,
       },
     );
 
-    console.log(response);
+    console.log('response products', response);
 
     if (response.status === 200) {
       const listProducts = response.data;
@@ -84,7 +90,7 @@ function* listProductsDashboard(action) {
       yield put({ type: dashboardActions.GET_LIST_PRODUCTS_FAILURE });
     }
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     yield put({ type: dashboardActions.GET_LIST_PRODUCTS_FAILURE });
   }
 }
@@ -92,5 +98,43 @@ export function* listProductsDashboardSaga() {
   yield takeLatest(
     dashboardActions.GET_LIST_PRODUCTS_REQUEST,
     listProductsDashboard,
+  );
+}
+
+function* getProductDetail(action) {
+  try {
+    console.log(action);
+    const apiRef = action.apiRef;
+    const productId = action.productId;
+    const API_URL =
+      'https://wizeline-academy.cdn.prismic.io/api/v2/documents/search';
+    const response = yield call(
+      axios.get,
+      `${API_URL}?ref=${apiRef}&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22${productId}%22%29+%5D%5D`,
+      {
+        signal: controller.signal,
+      },
+    );
+
+    console.log('response de product', response, productId);
+
+    if (response.status === 200) {
+      const productDetail = response.data;
+      yield put({
+        type: dashboardActions.GET_PRODUCT_DETAIL_SUCCESS,
+        productDetail: productDetail,
+      });
+    } else {
+      yield put({ type: dashboardActions.GET_PRODUCT_DETAIL_FAILURE });
+    }
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.GET_PRODUCT_DETAIL_FAILURE });
+  }
+}
+export function* getProductDetailSaga() {
+  yield takeLatest(
+    dashboardActions.GET_PRODUCT_DETAIL_REQUEST,
+    getProductDetail,
   );
 }

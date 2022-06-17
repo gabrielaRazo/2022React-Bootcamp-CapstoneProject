@@ -25,8 +25,8 @@ const GridCategorias = () => {
   const fetchingCategories = useSelector(
     (state) => state.dasboardReducer.fetchingCategories,
   );
-  const changeCategory = (name) => {
-    dispatch({ type: 'CHANGE_SELECTED_CATEGORY', selectedCategory: name });
+  const changeCategory = (category) => {
+    dispatch({ type: 'CHANGE_SELECTED_CATEGORY', selectedCategory: category });
   };
 
   return (
@@ -52,12 +52,15 @@ const GridCategorias = () => {
         {listCategories.results && (
           <Row centered>
             {listCategories.results.map(
-              ({ data: { main_image, url, name } }) => (
+              ({ data: { main_image, url, name }, slugs }) => (
                 <Col lg="2" md="3" sm="4" xs="11" spaced>
                   <Link
+                    onClick={() => changeCategory(slugs[0].toLowerCase())}
+                    to={{
+                      pathname: '/products/',
+                      search: `?category=${name.toLowerCase()}`,
+                    }}
                     style={{ textDecoration: 'none' }}
-                    to="/products"
-                    onClick={() => changeCategory(name)}
                   >
                     <Img src={main_image.url} alt={url} />
                     <Text>{name}</Text>

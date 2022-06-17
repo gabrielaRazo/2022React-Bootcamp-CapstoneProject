@@ -9,11 +9,15 @@ const initialState = {
   //Categories
   listCategories: [],
   fetchingCategories: false,
-  selectedCategory: 'decorate',
+  selectedCategory: '',
+  categoriesPage: 1,
   //Products
   fetchingProducts: false,
   listProducts: [],
   filterdProductList: [],
+  //Product Detail
+  fetchingProductDetail: false,
+  productDetail: [],
 };
 
 export default (state = initialState, action) => {
@@ -57,6 +61,22 @@ export default (state = initialState, action) => {
       };
     case dashboardActions.GET_LIST_PRODUCTS_FAILURE:
       return { ...state, fetchingProducts: false };
+
+    //Pagination Categories
+    case dashboardActions.CHANGE_CATEGORIES_PAGE:
+      return { ...state, categoriesPage: action.categoriesPage };
+
+    //Product Detail
+    case dashboardActions.GET_PRODUCT_DETAIL_REQUEST:
+      return { ...state, fetchingProductDetail: true };
+    case dashboardActions.GET_PRODUCT_DETAIL_SUCCESS:
+      return {
+        ...state,
+        fetchingProductDetail: false,
+        productDetail: action.productDetail,
+      };
+    case dashboardActions.GET_PRODUCT_DETAIL_FAILURE:
+      return { ...state, fetchingProductDetail: false };
 
     default:
       return state;

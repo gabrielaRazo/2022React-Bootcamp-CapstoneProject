@@ -179,6 +179,7 @@ export const PaginationContainer = styled.div`
     height: 24px;
     line-height: 24px;
     vertical-align: top;
+    cursor: pointer;
   }
   p {
     box-sizing: border-box;

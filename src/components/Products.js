@@ -10,7 +10,6 @@ import {
   Button,
 } from '../styles/Home.style';
 
-import ProductosMock from '../mocks/en-us/featured-products.json';
 import noResults from '../assets/no-results.png';
 import {
   Img,
@@ -27,17 +26,44 @@ export const Products = () => {
   const selectedCategory = useSelector(
     (state) => state.dasboardReducer.selectedCategory,
   );
+  const categoriesPage = useSelector(
+    (state) => state.dasboardReducer.categoriesPage,
+  );
+
+  const leftArrowPage = (page) => {
+    dispatch({ type: 'CHANGE_CATEGORIES_PAGE', categoriesPage: page });
+    dispatch({
+      type: 'GET_LIST_PRODUCTS_REQUEST',
+      apiRef: apiRef,
+      selectedCategory,
+      page: page,
+    });
+  };
+  const rightArrowPage = (page) => {
+    dispatch({ type: 'CHANGE_CATEGORIES_PAGE', categoriesPage: page });
+    dispatch({
+      type: 'GET_LIST_PRODUCTS_REQUEST',
+      apiRef: apiRef,
+      selectedCategory,
+      page: page,
+    });
+  };
 
   useEffect(() => {
     dispatch({
       type: 'GET_LIST_PRODUCTS_REQUEST',
       apiRef: apiRef,
+      page: categoriesPage,
       selectedCategory,
     });
   }, [apiRef, selectedCategory]);
 
   const filterdProductList = useSelector(
     (state) => state.dasboardReducer.filterdProductList,
+  );
+
+  const listProducts = useSelector(
+    (state) => state.dasboardReducer.listProducts,
   );
 
   const fetchingProducts = useSelector(
@@ -82,32 +108,89 @@ export const Products = () => {
           <Row centered>
             <Col lg="3" md="3" sm="3" xs="9">
               <PaginationContainer>
-                <img src="https://img.icons8.com/ios/50/undefined/double-left.png" />
+                <img
+                  onClick={() => leftArrowPage(listProducts.page - 1)}
+                  src="https://img.icons8.com/ios/50/undefined/double-left.png"
+                />
 
-                {ProductosMock.page}
+                {listProducts.page}
                 <span>/</span>
-                {ProductosMock.total_pages}
-                <img src="https://img.icons8.com/ios/50/undefined/double-right.png" />
+                {listProducts.total_pages}
+                <img
+                  onClick={() => rightArrowPage(listProducts.page + 1)}
+                  src="https://img.icons8.com/ios/50/undefined/double-right.png"
+                />
               </PaginationContainer>
             </Col>
           </Row>
         </>
       ) : (
         <>
-          <TopSpace extra />
-          <Row centered>
-            <Col lg="6" md="6" sm="8" xs="11" spaced>
+          {selectedCategory ? (
+            <>
+              <TopSpace extra />
               <Row centered>
-                <Img src={noResults} />
+                <Col lg="6" md="6" sm="8" xs="11" spaced>
+                  <Row centered>
+                    <Img src={noResults} />
+                  </Row>
+                </Col>
+                <Col lg="6" md="6" sm="6" xs="11" spaced>
+                  <TextCentered>
+                    Sorry, we couldn't find any matches for the category
+                    <strong> "{selectedCategory}"</strong>
+                  </TextCentered>
+                </Col>
               </Row>
-            </Col>
-            <Col lg="6" md="6" sm="6" xs="11" spaced>
-              <TextCentered>
-                Sorry, we couldn't find any matches for the category
-                <strong> "{selectedCategory}"</strong>
-              </TextCentered>
-            </Col>
-          </Row>
+            </>
+          ) : (
+            <>
+              {listProducts.results && (
+                <Row centered>
+                  {listProducts.results.map(
+                    ({ data: { mainimage, url, category, name, price } }) => (
+                      <Col lg="2" md="3" sm="4" xs="11" spaced>
+                        <Card>
+                          <ContainerImage>
+                            <Img
+                              products
+                              border
+                              src={mainimage.url}
+                              alt={url}
+                            />
+                            <TextImage>{category.slug}</TextImage>
+                          </ContainerImage>
+                          <Text>{name}</Text>
+                          <Row centered>
+                            <Text top>${price}</Text>
+                            <Button bottom>Add to Cart</Button>
+                          </Row>
+                        </Card>
+                      </Col>
+                    ),
+                  )}
+                </Row>
+              )}
+              <Row centered>
+                <Col lg="3" md="3" sm="3" xs="9">
+                  <PaginationContainer>
+                    <img
+                      onClick={() => leftArrowPage(listProducts.page - 1)}
+                      src="https://img.icons8.com/ios/50/undefined/double-left.png"
+                    />
+
+                    {listProducts.page}
+                    <span>/</span>
+                    {listProducts.total_pages}
+                    <img
+                      onClick={() => rightArrowPage(listProducts.page + 1)}
+                      src="https://img.icons8.com/ios/50/undefined/double-right.png"
+                    />
+                  </PaginationContainer>
+                </Col>
+              </Row>
+            </>
+          )}
         </>
       )}
     </ContainerSpinner>

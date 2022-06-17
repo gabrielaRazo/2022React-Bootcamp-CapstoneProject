@@ -25,7 +25,13 @@ const GridProductos = () => {
     (state) => state.dasboardReducer.fetchingProducts,
   );
 
-  console.log('listProducts', listProducts.results);
+  const getDetailProduct = (id) => {
+    dispatch({
+      type: 'GET_PRODUCT_DETAIL_REQUEST',
+      apiRef: apiRef,
+      productId: id,
+    });
+  };
 
   return (
     <div>
@@ -37,9 +43,9 @@ const GridProductos = () => {
       {listProducts.results && (
         <Row centered>
           {listProducts.results.map(
-            ({ data: { mainimage, url, category, name, price } }) => (
+            ({ data: { mainimage, url, category, name, price }, id }) => (
               <Col lg="2" md="3" sm="4" xs="11" spaced>
-                <ContainerImage>
+                <ContainerImage onClick={() => getDetailProduct(id)}>
                   <Img border src={mainimage.url} alt={url} />
                   <TextImage>{category.slug}</TextImage>
                 </ContainerImage>

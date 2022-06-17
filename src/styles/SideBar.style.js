@@ -35,9 +35,24 @@ export const LogoSBar = styled.div`
   margin-bottom: 24px;
 `;
 
+export const IconContainer = styled.div`
+  img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+  }
+  span {
+    font-size: 15px;
+    margin-left: 5px;
+  }
+  cursor: pointer;
+  color: ${colors.colors.inputGray};
+`;
+
 export const SLinkContainer = styled.div`
   background: ${({ isActive }) => !isActive && `transparent`};
   border-radius: 10px;
+  text-decoration: none;
   margin: 8px 0;
 
   &:hover {
