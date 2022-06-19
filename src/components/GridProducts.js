@@ -6,6 +6,7 @@ import {
   TextImage,
   ContainerImage,
   Card,
+  CardDashboard,
 } from '../styles/Grid.style';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,15 +46,17 @@ const GridProductos = () => {
           {listProducts.results.map(
             ({ data: { mainimage, url, category, name, price }, id }) => (
               <Col lg="2" md="3" sm="4" xs="11" spaced>
-                <ContainerImage onClick={() => getDetailProduct(id)}>
-                  <Img border src={mainimage.url} alt={url} />
-                  <TextImage>{category.slug}</TextImage>
-                </ContainerImage>
-                <Text>{name}</Text>
-                <Text>${price}</Text>
-                <Row centered>
-                  <Button>Add to Cart</Button>
-                </Row>
+                <CardDashboard onClick={() => getDetailProduct(id)}>
+                  <ContainerImage>
+                    <Img src={mainimage.url} alt={url} />
+                    <TextImage>{category.slug}</TextImage>
+                  </ContainerImage>
+                  <Text>{name}</Text>
+                  <Row centered>
+                    <Text top>${price}</Text>
+                    <Button bottom>Add to Cart</Button>
+                  </Row>
+                </CardDashboard>
               </Col>
             ),
           )}

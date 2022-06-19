@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 export const Products = () => {
   const dispatch = useDispatch();
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
+  const urlPath = window.location.href.split('=')[1];
   const selectedCategory = useSelector(
     (state) => state.dasboardReducer.selectedCategory,
   );
@@ -50,13 +51,23 @@ export const Products = () => {
   };
 
   useEffect(() => {
-    dispatch({
-      type: 'GET_LIST_PRODUCTS_REQUEST',
-      apiRef: apiRef,
-      page: categoriesPage,
-      selectedCategory,
-    });
-  }, [apiRef, selectedCategory]);
+    if (urlPath) {
+      const urlPathCategories = urlPath.split('?')[0].split(',');
+      dispatch({
+        type: 'GET_LIST_PRODUCTS_REQUEST',
+        apiRef: apiRef,
+        page: window.location.href.split('=')[2],
+        selectedCategory: urlPathCategories,
+      });
+    } else {
+      dispatch({
+        type: 'GET_LIST_PRODUCTS_REQUEST',
+        apiRef: apiRef,
+        page: categoriesPage,
+        selectedCategory,
+      });
+    }
+  }, [apiRef, selectedCategory, urlPath]);
 
   const filterdProductList = useSelector(
     (state) => state.dasboardReducer.filterdProductList,
@@ -92,7 +103,7 @@ export const Products = () => {
                 <Col lg="2" md="3" sm="4" xs="11" spaced>
                   <Card>
                     <ContainerImage>
-                      <Img products border src={mainimage.url} alt={url} />
+                      <Img products src={mainimage.url} alt={url} />
                       <TextImage>{category.slug}</TextImage>
                     </ContainerImage>
                     <Text>{name}</Text>
@@ -126,7 +137,7 @@ export const Products = () => {
         </>
       ) : (
         <>
-          {selectedCategory ? (
+          {selectedCategory[0] || urlPath ? (
             <>
               <TopSpace extra />
               <Row centered>
@@ -137,8 +148,8 @@ export const Products = () => {
                 </Col>
                 <Col lg="6" md="6" sm="6" xs="11" spaced>
                   <TextCentered>
-                    Sorry, we couldn't find any matches for the category
-                    <strong> "{selectedCategory}"</strong>
+                    Sorry, we couldn't find any matches for the categories
+                    <strong> "{selectedCategory.join(', ')}"</strong>
                   </TextCentered>
                 </Col>
               </Row>
@@ -152,12 +163,7 @@ export const Products = () => {
                       <Col lg="2" md="3" sm="4" xs="11" spaced>
                         <Card>
                           <ContainerImage>
-                            <Img
-                              products
-                              border
-                              src={mainimage.url}
-                              alt={url}
-                            />
+                            <Img products src={mainimage.url} alt={url} />
                             <TextImage>{category.slug}</TextImage>
                           </ContainerImage>
                           <Text>{name}</Text>

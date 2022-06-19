@@ -97,7 +97,8 @@ export const Button = styled.button`
   font-size: 14px;
   font-family: 'Montserrat', sans-serif;
   padding: 10px;
-  ${({ bottom }) => bottom && `position: absolute; bottom: 0;`};
+  ${({ bottom }) =>
+    bottom && `position: absolute; bottom: 0; margin-bottom:10px;`};
 
   cursor: pointer;
 

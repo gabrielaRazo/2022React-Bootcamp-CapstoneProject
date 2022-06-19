@@ -5,12 +5,14 @@ export const Card = styled.div`
   background-color: white;
   border-radius: 10px;
   text-align: center;
-  height: 354px;
+  height: 374px;
   position: relative;
+  border: 1px solid ${colors.colors.hoverInput};
 `;
 
 export const Img = styled.img`
   max-width: 100%;
+  border-radius: 10px;
   ${({ products }) =>
     products &&
     `
@@ -29,7 +31,7 @@ export const Text = styled.p`
   margin-top: 0;
   text-align: center;
   font-weight: 300;
-  ${({ top }) => top && `position: absolute;  top: 83%; `};
+  ${({ top }) => top && `position: absolute;  top: 80%; `};
   color: ${colors.colors.titleBlue};
 `;
 
@@ -45,4 +47,26 @@ export const TextImage = styled.p`
 export const ContainerImage = styled.div`
   position: relative;
   text-align: center;
+`;
+
+export const CardDashboard = styled.div`
+  position: relative;
+  border: 1px solid ${colors.colors.hoverInput};
+  border-radius: 10px;
+  padding: 10px;
+  @media (max-width: 480px) {
+    height: 640px;
+  }
+  @media (min-width: 481px) and (max-width: 768px) {
+    height: 370px;
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    height: 450px;
+  }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    height: 400px;
+  }
+  @media (min-width: 1441px) and (max-width: 2560px) {
+    height: 700px;
+  }
 `;

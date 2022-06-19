@@ -75,7 +75,7 @@ export const LogoResp = styled.img`
   @media (min-width: 480px) {
     display: none;
   }
-  width: 100%;
+  width: 80%;
 `;
 
 export const SearchInput = styled.input`

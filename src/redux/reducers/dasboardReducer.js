@@ -9,7 +9,7 @@ const initialState = {
   //Categories
   listCategories: [],
   fetchingCategories: false,
-  selectedCategory: '',
+  selectedCategory: [],
   categoriesPage: 1,
   //Products
   fetchingProducts: false,

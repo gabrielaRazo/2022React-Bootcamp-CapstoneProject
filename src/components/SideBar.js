@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import logoSideBar from '../assets/logo-responsive.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Row } from '../styles/Home.style';
@@ -21,6 +21,7 @@ const Sidebar = () => {
   const searchRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const urlPath = window.location.href.split('=')[1];
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const selectedCategory = useSelector(
     (state) => state.dasboardReducer.selectedCategory,
@@ -41,31 +42,47 @@ const Sidebar = () => {
     //console.log('searchRef', searchRef.current.value);
   };
 
+  const selectCategories = (category) => {
+    let listURL = selectedCategory.slice(0);
+    let categories = selectedCategory.slice(0);
+    categories.push(category);
+    listURL.push(category);
+    dispatch({
+      type: 'CHANGE_SELECTED_CATEGORY',
+      selectedCategory: categories,
+    });
+
+    for (let i = 0; i < selectedCategory.length; i++) {
+      if (category === selectedCategory[i]) {
+        const deleted = selectedCategory.filter((item) => item !== category);
+        dispatch({
+          type: 'CHANGE_SELECTED_CATEGORY',
+          selectedCategory: deleted,
+        });
+        listURL = deleted;
+      }
+    }
+
+    navigate(`/products/?category=${listURL}?page=${categoriesPage}`);
+  };
+
   const listCategories = useSelector(
     (state) => state.dasboardReducer.listCategories,
   );
   const fetchingCategories = useSelector(
     (state) => state.dasboardReducer.fetchingCategories,
   );
-  const changeCategory = (category) => {
-    console.log('category', category);
-    dispatch({
-      type: 'CHANGE_SELECTED_CATEGORY',
-      selectedCategory: category,
-      page: categoriesPage,
-    });
-  };
 
   const resetSelectedCategory = () => {
     dispatch({
       type: 'CHANGE_SELECTED_CATEGORY',
-      selectedCategory: '',
+      selectedCategory: [],
     });
     dispatch({ type: 'CHANGE_CATEGORIES_PAGE', categoriesPage: 1 });
     dispatch({
       type: 'GET_LIST_PRODUCTS_REQUEST',
       apiRef: apiRef,
-      selectedCategory: '',
+      selectedCategory: [],
       page: 1,
     });
     navigate('/products');
@@ -87,70 +104,67 @@ const Sidebar = () => {
         </SSearchIcon>
       </SSearch>
       <Divider />
-
       {listCategories.results && (
         <>
           {listCategories.results.map(
             ({ data: { main_image, name }, slugs }) => (
-              <Link
-                onClick={() => changeCategory(slugs[0].toLowerCase())}
-                to={{
-                  pathname: '/products/',
-                  search: `?category=${slugs[0].toLowerCase()}`,
+              <SLinkContainer
+                style={{
+                  backgroundColor: urlPath
+                    ? urlPath
+                        .split('?')[0]
+                        .split(',')
+                        .includes(slugs[0].toLowerCase())
+                      ? '#e6e6e6'
+                      : 'white'
+                    : selectedCategory.includes(slugs[0].toLowerCase())
+                    ? '#e6e6e6'
+                    : 'white',
                 }}
-                style={{ textDecoration: 'none' }}
+                onClick={() => selectCategories(slugs[0].toLowerCase())}
               >
-                <SLinkContainer
-                  style={{
-                    backgroundColor:
-                      name.toLowerCase() === selectedCategory.toLowerCase()
-                        ? '#e6e6e6'
-                        : 'white',
-                  }}
-                >
-                  <SLink>
-                    <SLinkIcon>
-                      {main_image.alt === 'Bath' && (
-                        <img
-                          src={
-                            'https://img.icons8.com/dotty/80/undefined/shower-and-tub.png'
-                          }
-                        />
-                      )}
-                      {main_image.alt === 'Lighting' && (
-                        <img
-                          src={
-                            'https://img.icons8.com/dotty/80/undefined/light.png'
-                          }
-                        />
-                      )}
-                      {main_image.alt === 'Kitchen' && (
-                        <img
-                          src={
-                            'https://img.icons8.com/ios/50/undefined/kitchenwares.png'
-                          }
-                        />
-                      )}
-                      {main_image.alt === 'Furniture' && (
-                        <img
-                          src={
-                            'https://img.icons8.com/cotton/64/undefined/bath--v2.png'
-                          }
-                        />
-                      )}
-                      {main_image.alt === 'Decorate' && (
-                        <img
-                          src={
-                            'https://img.icons8.com/ios/50/undefined/home-decorations.png'
-                          }
-                        />
-                      )}
+                <SLink>
+                  <SLinkIcon>
+                    {main_image.alt === 'Bath' && (
+                      <img
+                        src={
+                          'https://img.icons8.com/dotty/80/undefined/shower-and-tub.png'
+                        }
+                      />
+                    )}
+                    {main_image.alt === 'Lighting' && (
+                      <img
+                        src={
+                          'https://img.icons8.com/dotty/80/undefined/light.png'
+                        }
+                      />
+                    )}
+                    {main_image.alt === 'Kitchen' && (
+                      <img
+                        src={
+                          'https://img.icons8.com/ios/50/undefined/kitchenwares.png'
+                        }
+                      />
+                    )}
+                    {main_image.alt === 'Furniture' && (
+                      <img
+                        src={
+                          'https://img.icons8.com/cotton/64/undefined/bath--v2.png'
+                        }
+                      />
+                    )}
+                    {main_image.alt === 'Decorate' && (
+                      <img
+                        src={
+                          'https://img.icons8.com/ios/50/undefined/home-decorations.png'
+                        }
+                      />
+                    )}
 
-                      <SLinkLabel>{name}</SLinkLabel>
-                    </SLinkIcon>
-                  </SLink>
-                </SLinkContainer>
-              </Link>
+                    <SLinkLabel>{name}</SLinkLabel>
+                  </SLinkIcon>
+                </SLink>
+              </SLinkContainer>
             ),
           )}
         </>

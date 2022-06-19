@@ -43,15 +43,13 @@ export function* listCategoriesDashboardSaga() {
 
 function* listProductsDashboard(action) {
   try {
-    console.log(action);
+    //console.log('action productos', action);
     const apiRef = action.apiRef;
     let page = 1;
     if (action.page) {
-      page = action.page;
+      page = parseInt(action.page);
     }
     const selectedCategory = action.selectedCategory;
-
-    console.log('params', page, selectedCategory);
 
     const response = yield call(
       axios.get,
@@ -63,7 +61,7 @@ function* listProductsDashboard(action) {
       },
     );
 
-    console.log('response products', response);
+    //console.log('response products', response);
 
     if (response.status === 200) {
       const listProducts = response.data;
@@ -71,12 +69,14 @@ function* listProductsDashboard(action) {
 
       if (selectedCategory) {
         for (let i = 0; i < listProducts.results.length; i++) {
-          if (
-            listProducts.results[i].data.category.slug
-              .toLowerCase()
-              .includes(selectedCategory.toLowerCase()) === true
-          ) {
-            filterdProductList.push(listProducts.results[i]);
+          for (const item in selectedCategory) {
+            if (
+              listProducts.results[i].data.category.slug
+                .toLowerCase()
+                .includes(selectedCategory[item].toLowerCase()) === true
+            ) {
+              filterdProductList.push(listProducts.results[i]);
+            }
           }
         }
       }

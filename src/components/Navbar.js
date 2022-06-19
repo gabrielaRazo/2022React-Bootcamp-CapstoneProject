@@ -30,10 +30,10 @@ const Navbar = (props) => {
           <Col xs="2" collapse="lg" spaced>
             <LogoResp src={LogoResponsive} alt="logoResponsive" />
           </Col>
-          <Col lg="8" md="8" sm="5" xs="5">
+          <Col lg="8" md="7" sm="5" xs="5">
             <SearchInput placeholder="Buscar ..." disabled={true} />
           </Col>
-          <Col lg="1" md="1" sm="3" xs="4">
+          <Col lg="1" md="2" sm="3" xs="4">
             <IconCart disabled={true} />
           </Col>
         </Row>
