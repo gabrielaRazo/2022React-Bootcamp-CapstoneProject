@@ -103,7 +103,7 @@ export function* listProductsDashboardSaga() {
 
 function* getProductDetail(action) {
   try {
-    console.log(action);
+    //console.log(action);
     const apiRef = action.apiRef;
     const productId = action.productId;
     const API_URL =
@@ -115,11 +115,10 @@ function* getProductDetail(action) {
         signal: controller.signal,
       },
     );
-
-    console.log('response de product', response, productId);
+    //console.log('response de product', response, productId);
 
     if (response.status === 200) {
-      const productDetail = response.data;
+      const productDetail = response.data.results;
       yield put({
         type: dashboardActions.GET_PRODUCT_DETAIL_SUCCESS,
         productDetail: productDetail,

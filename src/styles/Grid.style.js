@@ -8,11 +8,21 @@ export const Card = styled.div`
   height: 374px;
   position: relative;
   border: 1px solid ${colors.colors.hoverInput};
+  -webkit-transition: margin 0.5s ease-out;
+  -moz-transition: margin 0.5s ease-out;
+  -o-transition: margin 0.5s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+  }
 `;
 
 export const Img = styled.img`
   max-width: 100%;
   border-radius: 10px;
+
   ${({ products }) =>
     products &&
     `
@@ -23,6 +33,7 @@ export const Img = styled.img`
     `
     border: 1px solid ${colors.colors.hoverInput};
   `}
+  
 
   border-radius: 10px;
 `;
@@ -54,6 +65,16 @@ export const CardDashboard = styled.div`
   border: 1px solid ${colors.colors.hoverInput};
   border-radius: 10px;
   padding: 10px;
+  -webkit-transition: margin 0.5s ease-out;
+  -moz-transition: margin 0.5s ease-out;
+  -o-transition: margin 0.5s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-top: 5px;
+  }
+
   @media (max-width: 480px) {
     height: 640px;
   }

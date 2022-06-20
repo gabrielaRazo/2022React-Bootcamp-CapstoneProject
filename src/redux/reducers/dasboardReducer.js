@@ -2,7 +2,7 @@ import * as dashboardActions from '../actions/dashboardActions';
 
 const initialState = {
   //API ref
-  apiRef: '',
+  apiRef: 'YZaBvBIAACgAvnOP',
   //Banner
   listBanner: [],
   fetchingBanner: false,

@@ -19,9 +19,11 @@ import {
   Card,
 } from '../styles/Grid.style';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export const Products = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const urlPath = window.location.href.split('=')[1];
   const selectedCategory = useSelector(
@@ -81,6 +83,15 @@ export const Products = () => {
     (state) => state.dasboardReducer.fetchingProducts,
   );
 
+  const getDetailProduct = (id) => {
+    dispatch({
+      type: 'GET_PRODUCT_DETAIL_REQUEST',
+      apiRef: apiRef,
+      productId: id,
+    });
+    navigate(`/product/${id}`);
+  };
+
   return (
     <ContainerSpinner active={fetchingProducts}>
       <TopSpace />
@@ -99,9 +110,9 @@ export const Products = () => {
         <>
           <Row centered>
             {filterdProductList.map(
-              ({ data: { mainimage, url, category, name, price } }) => (
+              ({ data: { mainimage, url, category, name, price }, id }) => (
                 <Col lg="2" md="3" sm="4" xs="11" spaced>
-                  <Card>
+                  <Card onClick={() => getDetailProduct(id)}>
                     <ContainerImage>
                       <Img products src={mainimage.url} alt={url} />
                       <TextImage>{category.slug}</TextImage>

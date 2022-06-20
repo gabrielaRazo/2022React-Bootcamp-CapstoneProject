@@ -9,4 +9,5 @@ export const colors = {
   textBlack: '#f7f0ea',
   footerBlue: '#3b6f8d',
   white: '#fff',
+  productsText: '#707070',
 };

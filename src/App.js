@@ -8,14 +8,9 @@ import {
 } from 'react-router-dom';
 import ProductList from './pages/ProductList';
 import Home from './pages/Home';
-import { useDispatch, useSelector } from 'react-redux';
 import ProductDetails from './pages/ProductDetails';
 
 function App() {
-  // /products?category={categorySlug}
-  // /product/{productId}
-  // { path: '*', element: <Navigate replace to="/" /> },
-
   return (
     <div>
       <BrowserRouter>
@@ -23,7 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/products" element={<ProductList />} />
-          <Route path="/productDetail" element={<ProductDetails />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
           <Route path="/products/:selectedCategory" element={<ProductList />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
