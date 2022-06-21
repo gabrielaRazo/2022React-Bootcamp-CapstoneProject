@@ -9,6 +9,7 @@ import {
 import ProductList from './pages/ProductList';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
+import ProductSearch from './pages/ProductSearch';
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
           <Route path="/products" element={<ProductList />} />
           <Route path="/product/:productId" element={<ProductDetails />} />
           <Route path="/products/:selectedCategory" element={<ProductList />} />
+          <Route path="/products/:searchTerm" element={<ProductList />} />
+          <Route path="/products/:page" element={<ProductList />} />
+          <Route path="/search/:searchTerm" element={<ProductSearch />} />
+          <Route path="/search" element={<ProductSearch />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>

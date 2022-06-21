@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logoSideBar from '../assets/logo-responsive.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Row } from '../styles/Home.style';
@@ -18,7 +18,6 @@ import {
 } from '../styles/SideBar.style';
 
 const Sidebar = () => {
-  const searchRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const urlPath = window.location.href.split('=')[1];
@@ -29,6 +28,7 @@ const Sidebar = () => {
   const categoriesPage = useSelector(
     (state) => state.dasboardReducer.categoriesPage,
   );
+  const searchText = useSelector((state) => state.dasboardReducer.searchText);
 
   useEffect(() => {
     dispatch({
@@ -38,8 +38,18 @@ const Sidebar = () => {
     });
   }, [apiRef]);
 
-  const searchClickHandler = () => {
-    //console.log('searchRef', searchRef.current.value);
+  const searchClickHandler = (element) => {
+    if (element.target.value) {
+      dispatch({
+        type: 'CHANGE_SEARCH_VALUE',
+        searchText: element.target.value,
+      });
+    } else {
+      dispatch({
+        type: 'CHANGE_SEARCH_VALUE',
+        searchText: '',
+      });
+    }
   };
 
   const selectCategories = (category) => {
@@ -73,11 +83,42 @@ const Sidebar = () => {
     (state) => state.dasboardReducer.fetchingCategories,
   );
 
+  const searchInput = () => {
+    if (searchText) {
+      dispatch({
+        type: 'GET_PRODUCT_SEARCH_REQUEST',
+        apiRef: apiRef,
+        searchText: searchText,
+      });
+      dispatch({
+        type: 'CHANGE_SELECTED_CATEGORY',
+        selectedCategory: [],
+      });
+      navigate(`/products/${searchText}`);
+    }
+  };
+
+  const onSubmitEnter = (event) => {
+    if (event.key === 'Enter') {
+      dispatch({
+        type: 'GET_PRODUCT_SEARCH_REQUEST',
+        apiRef: apiRef,
+        searchText: searchText,
+      });
+      dispatch({
+        type: 'CHANGE_SELECTED_CATEGORY',
+        selectedCategory: [],
+      });
+      navigate(`/products/${searchText}`);
+    }
+  };
+
   const resetSelectedCategory = () => {
     dispatch({
       type: 'CHANGE_SELECTED_CATEGORY',
       selectedCategory: [],
     });
+    dispatch({ type: 'GET_PRODUCT_SEARCH_FAILURE' });
     dispatch({ type: 'CHANGE_CATEGORIES_PAGE', categoriesPage: 1 });
     dispatch({
       type: 'GET_LIST_PRODUCTS_REQUEST',
@@ -85,6 +126,11 @@ const Sidebar = () => {
       selectedCategory: [],
       page: 1,
     });
+    dispatch({
+      type: 'CHANGE_SEARCH_VALUE',
+      searchText: '',
+    });
+
     navigate('/products');
   };
 
@@ -97,10 +143,15 @@ const Sidebar = () => {
           </Link>
         </LogoSBar>
       </Row>
-      <SSearch onClick={searchClickHandler}>
-        <SSearchIcon>
+      <SSearch>
+        <SSearchIcon type="submit" value="Submit" onClick={searchInput}>
           <img src="https://img.icons8.com/ios-glyphs/30/undefined/search--v1.png" />
-          <input ref={searchRef} placeholder="Search" />
+          <input
+            onChange={(e) => searchClickHandler(e)}
+            placeholder="Search"
+            onKeyDown={onSubmitEnter}
+            value={searchText}
+          />
         </SSearchIcon>
       </SSearch>
       <Divider />

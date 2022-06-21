@@ -61,7 +61,7 @@ function* listProductsDashboard(action) {
       },
     );
 
-    //console.log('response products', response);
+    //console.log('response products', response, page, selectedCategory);
 
     if (response.status === 200) {
       const listProducts = response.data;
@@ -80,6 +80,7 @@ function* listProductsDashboard(action) {
           }
         }
       }
+      //console.log('filterdProductList', filterdProductList, listProducts);
 
       yield put({
         type: dashboardActions.GET_LIST_PRODUCTS_SUCCESS,
@@ -135,5 +136,53 @@ export function* getProductDetailSaga() {
   yield takeLatest(
     dashboardActions.GET_PRODUCT_DETAIL_REQUEST,
     getProductDetail,
+  );
+}
+
+function* listProductSearch(action) {
+  try {
+    //console.log(action);
+    let searchText = '';
+    if (action.searchText) {
+      searchText = action.searchText;
+    }
+
+    const apiRef = action.apiRef;
+    const API_URL = `https://wizeline-academy.cdn.prismic.io/api/v2/documents/search`;
+    const TYPE_URL = `?ref=${apiRef}&q=%5B%5Bat(document.type%2C%20%22product%22)%5D%5D&`;
+    const URLP2 = `q=%5B%5Bfulltext(document%2C%20%22$`;
+
+    const response = yield call(
+      axios.get,
+      `${API_URL}${TYPE_URL}${URLP2}${searchText}%22)%5D%5D&lang=en-us&pageSize=20`,
+      {
+        signal: controller.signal,
+      },
+    );
+    //console.log('response', response);
+
+    if (response.status === 200) {
+      const searchResult = response.data;
+      const listProductSearch = response.data.results;
+      const listProductSearchInfo = response.data;
+
+      yield put({
+        type: dashboardActions.GET_PRODUCT_SEARCH_SUCCESS,
+        searchResult: searchResult,
+        listProductSearch: listProductSearch,
+        listProductSearchInfo: listProductSearchInfo,
+      });
+    } else {
+      yield put({ type: dashboardActions.GET_PRODUCT_SEARCH_FAILURE });
+    }
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.GET_PRODUCT_SEARCH_FAILURE });
+  }
+}
+export function* listProductSearchSaga() {
+  yield takeLatest(
+    dashboardActions.GET_PRODUCT_SEARCH_REQUEST,
+    listProductSearch,
   );
 }

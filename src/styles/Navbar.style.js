@@ -82,7 +82,6 @@ export const SearchInput = styled.input`
   width: 100%;
   display: flex;
   border: 1px solid ${colors.colors.hoverInput};
-  cursor: not-allowed !important;
   color: ${colors.colors.inputGray};
   border-radius: 20px;
   padding: 10px 40px 10px 20px;
@@ -91,12 +90,24 @@ export const SearchInput = styled.input`
   background-color: ${colors.colors.white};
   opacity: 0.5;
 
-  &:hover {
-    cursor: not-allowed;
-  }
-
   &:focus {
-    visibility: hidden;
+    border: 1px solid ${colors.colors.hoverSubBlue};
+  }
+`;
+
+export const StyledInput = styled.div`
+  position: relative;
+`;
+
+export const SearchBtn = styled.div`
+  position: absolute;
+  right: -3em;
+  cursor: pointer;
+
+  top: 5px;
+  img {
+    color: ${colors.colors.inputGray};
+    width: 25px;
   }
 `;
 

@@ -23,11 +23,11 @@ import ProductGallery from '../components/ProductGallery';
 const ProductDetails = (props) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(1);
+  const iconsURL = 'https://img.icons8.com/';
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const productDetail = useSelector(
     (state) => state.dasboardReducer.productDetail,
   );
-  console.log('productDetail', productDetail);
 
   const productId = useSelector((state) => state.dasboardReducer.productId);
 
@@ -46,15 +46,6 @@ const ProductDetails = (props) => {
       });
     }
   }, [productId]);
-
-  const handleChange = (e) => {
-    console.log('e.target.value', e.target.value);
-    //setValue(event.target.value);
-  };
-
-  const iconsURL = 'https://img.icons8.com/';
-
-  console.log('value', value);
 
   return (
     <div>
@@ -129,7 +120,7 @@ const ProductDetails = (props) => {
                         </InputContainer>
                       </Col>
                       <Col lg={8} md={7} sm={7} xs={7} spaced>
-                        <Button>Añadir al carrito</Button>
+                        <Button>Add to Cart</Button>
                       </Col>
                     </Row>
                   </CartContainer>

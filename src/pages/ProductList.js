@@ -1,8 +1,8 @@
 import React from 'react';
-import { Products } from '../components/Products';
 import Sidebar from '../components/SideBar';
 import { Col, Row } from '../styles/Home.style';
 import useFeaturedBanners from '../utils/hooks/useFeaturedBanners';
+import ProductsFilter from './ProductsFilter';
 
 const ProductList = () => {
   useFeaturedBanners();
@@ -13,7 +13,7 @@ const ProductList = () => {
           <Sidebar />
         </Col>
         <Col lg="9" md="9" sm="6" xs="5">
-          <Products />
+          <ProductsFilter />
         </Col>
       </Row>
     </div>

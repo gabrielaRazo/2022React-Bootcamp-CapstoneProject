@@ -15,9 +15,16 @@ const initialState = {
   fetchingProducts: false,
   listProducts: [],
   filterdProductList: [],
+  filterdProductListInfo: [],
   //Product Detail
   fetchingProductDetail: false,
   productDetail: [],
+  //Search Bar
+  searchResult: [],
+  searchText: '',
+  listProductSearch: [],
+  listProductSearchInfo: [],
+  fetchingProductSearch: false,
 };
 
 export default (state = initialState, action) => {
@@ -58,6 +65,7 @@ export default (state = initialState, action) => {
         fetchingProducts: false,
         listProducts: action.listProducts,
         filterdProductList: action.filterdProductList,
+        filterdProductListInfo: action.filterdProductListInfo,
       };
     case dashboardActions.GET_LIST_PRODUCTS_FAILURE:
       return { ...state, fetchingProducts: false };
@@ -77,6 +85,23 @@ export default (state = initialState, action) => {
       };
     case dashboardActions.GET_PRODUCT_DETAIL_FAILURE:
       return { ...state, fetchingProductDetail: false };
+
+    //Search Bar
+    case dashboardActions.CHANGE_SEARCH_VALUE:
+      return { ...state, searchText: action.searchText };
+
+    case dashboardActions.GET_PRODUCT_SEARCH_REQUEST:
+      return { ...state, fetchingProductSearch: true };
+    case dashboardActions.GET_PRODUCT_SEARCH_SUCCESS:
+      return {
+        ...state,
+        fetchingProductSearch: false,
+        searchResult: action.searchResult,
+        listProductSearch: action.listProductSearch,
+        listProductSearchInfo: action.listProductSearchInfo,
+      };
+    case dashboardActions.GET_PRODUCT_SEARCH_FAILURE:
+      return { ...state, fetchingProductSearch: false, listProductSearch: [] };
 
     default:
       return state;

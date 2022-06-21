@@ -25,7 +25,8 @@ export const Products = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
-  const urlPath = window.location.href.split('=')[1];
+  const urlPath = window.location.href.split('category=')[1];
+  const urlPage = window.location.href.split('page=')[1];
   const selectedCategory = useSelector(
     (state) => state.dasboardReducer.selectedCategory,
   );
@@ -41,6 +42,11 @@ export const Products = () => {
       selectedCategory,
       page: page,
     });
+    if (selectedCategory[0]) {
+      navigate(`/products/?category=${selectedCategory}?page=${page}`);
+    } else {
+      navigate(`/products/?page=${page}`);
+    }
   };
   const rightArrowPage = (page) => {
     dispatch({ type: 'CHANGE_CATEGORIES_PAGE', categoriesPage: page });
@@ -50,6 +56,11 @@ export const Products = () => {
       selectedCategory,
       page: page,
     });
+    if (selectedCategory[0]) {
+      navigate(`/products/?category=${selectedCategory}?page=${page}`);
+    } else {
+      navigate(`/products/?page=${page}`);
+    }
   };
 
   useEffect(() => {
@@ -61,6 +72,13 @@ export const Products = () => {
         page: window.location.href.split('=')[2],
         selectedCategory: urlPathCategories,
       });
+    } else if (urlPage) {
+      dispatch({
+        type: 'GET_LIST_PRODUCTS_REQUEST',
+        apiRef: apiRef,
+        page: urlPage,
+        selectedCategory,
+      });
     } else {
       dispatch({
         type: 'GET_LIST_PRODUCTS_REQUEST',
@@ -69,10 +87,14 @@ export const Products = () => {
         selectedCategory,
       });
     }
-  }, [apiRef, selectedCategory, urlPath]);
+  }, [apiRef, selectedCategory, urlPath, urlPage]);
 
   const filterdProductList = useSelector(
     (state) => state.dasboardReducer.filterdProductList,
+  );
+
+  const filterdProductListInfo = useSelector(
+    (state) => state.dasboardReducer.filterdProductListInfo,
   );
 
   const listProducts = useSelector(
@@ -131,15 +153,21 @@ export const Products = () => {
             <Col lg="3" md="3" sm="3" xs="9">
               <PaginationContainer>
                 <img
-                  onClick={() => leftArrowPage(listProducts.page - 1)}
+                  onClick={() => leftArrowPage(filterdProductListInfo.page - 1)}
                   src="https://img.icons8.com/ios/50/undefined/double-left.png"
                 />
 
-                {listProducts.page}
+                {filterdProductListInfo.page}
                 <span>/</span>
-                {listProducts.total_pages}
+                {filterdProductListInfo.total_pages}
                 <img
-                  onClick={() => rightArrowPage(listProducts.page + 1)}
+                  onClick={() =>
+                    rightArrowPage(
+                      filterdProductListInfo.total_pages !==
+                        filterdProductListInfo.page &&
+                        filterdProductListInfo.page + 1,
+                    )
+                  }
                   src="https://img.icons8.com/ios/50/undefined/double-right.png"
                 />
               </PaginationContainer>
@@ -170,9 +198,12 @@ export const Products = () => {
               {listProducts.results && (
                 <Row centered>
                   {listProducts.results.map(
-                    ({ data: { mainimage, url, category, name, price } }) => (
+                    ({
+                      data: { mainimage, url, category, name, price },
+                      id,
+                    }) => (
                       <Col lg="2" md="3" sm="4" xs="11" spaced>
-                        <Card>
+                        <Card onClick={() => getDetailProduct(id)}>
                           <ContainerImage>
                             <Img products src={mainimage.url} alt={url} />
                             <TextImage>{category.slug}</TextImage>

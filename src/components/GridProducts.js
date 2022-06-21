@@ -27,6 +27,10 @@ const GridProductos = () => {
     (state) => state.dasboardReducer.fetchingProducts,
   );
 
+  const resetSearch = () => {
+    dispatch({ type: 'GET_PRODUCT_SEARCH_FAILURE' });
+  };
+
   const getDetailProduct = (id) => {
     dispatch({
       type: 'GET_PRODUCT_DETAIL_REQUEST',
@@ -67,7 +71,7 @@ const GridProductos = () => {
       <Row centered>
         <Link to="/products">
           <TopSpace />
-          <Button>View all products</Button>
+          <Button onClick={resetSearch}>View all products</Button>
         </Link>
       </Row>
       <TopSpace />
