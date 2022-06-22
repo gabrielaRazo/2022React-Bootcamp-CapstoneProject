@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import * as colors from './Colors.style';
 
 export const HomeContainer = styled.div`
   padding-top: 80px;
@@ -70,6 +71,8 @@ export const Col = styled.div`
 
 export const TopSpace = styled.div`
   margin-top: 2em;
+  ${({ spaceHeader }) => spaceHeader && `margin-top:4.5em`};
+  ${({ extra }) => extra && `margin-top:5em`};
 `;
 
 export const ContainerCenter = styled.div`
@@ -80,8 +83,112 @@ export const ContainerCenter = styled.div`
   align-items: center;
 `;
 
-export const TitleSection = styled.h1`
+export const SectionTitle = styled.h1`
   text-align: center;
   font-weight: 200;
-  color: #485461;
+  color: ${colors.colors.titleBlue};
+`;
+
+export const Button = styled.button`
+  border-radius: 10px;
+  background-color: ${colors.colors.subBlue};
+  border-color: ${colors.colors.subBlue};
+  color: white;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  padding: 10px;
+
+  &:hover {
+    background-color: ${colors.colors.hoverSubBlue};
+    border-color: ${colors.colors.hoverSubBlue};
+  }
+`;
+
+export const ContainerSpinner = styled.div`
+  position: relative;
+  ${({ active }) =>
+    active &&
+    `
+    background-color: '0xFF0E3311';
+  opacity: 0.5;
+  `}
+`;
+
+export const Spinner = styled.svg`
+  position: absolute;
+  top: 15%;
+  left: 40%;
+  animation: rotate 2s linear infinite;
+  width: 50px;
+  height: 50px;
+
+  & .path {
+    stroke: ${colors.colors.subBlue};
+    stroke-linecap: round;
+    animation: dash 1.5s ease-in-out infinite;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes dash {
+    0% {
+      stroke-dasharray: 1, 150;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -35;
+    }
+    100% {
+      stroke-dasharray: 90, 150;
+      stroke-dashoffset: -124;
+    }
+  }
+  ${({ active }) =>
+    !active &&
+    `
+    display: none;
+  `}
+`;
+
+export const TextCentered = styled.p`
+  text-align: center;
+`;
+
+export const Img = styled.img`
+  width: 100%;
+`;
+
+export const PaginationContainer = styled.div`
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #000000d9;
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  img {
+    height: 24px;
+    line-height: 24px;
+    vertical-align: top;
+  }
+  p {
+    box-sizing: border-box;
+    height: 100%;
+    margin-right: 8px;
+    padding: 0 6px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 2px;
+    outline: none;
+  }
+  span {
+    margin: 0 10px 0 5px;
+  }
 `;
