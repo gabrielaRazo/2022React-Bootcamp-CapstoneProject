@@ -39,7 +39,7 @@ function useFeaturedBanners() {
         }
       } catch (err) {
         dispatch({ type: 'GET_LIST_BANNER_FAILURE', listBanner: [] });
-        console.error(err);
+        //console.error(err);
       }
     }
 

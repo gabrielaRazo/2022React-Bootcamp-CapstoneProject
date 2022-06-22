@@ -57,6 +57,7 @@ const Sidebar = () => {
     let categories = selectedCategory.slice(0);
     categories.push(category);
     listURL.push(category);
+
     dispatch({
       type: 'CHANGE_SELECTED_CATEGORY',
       selectedCategory: categories,

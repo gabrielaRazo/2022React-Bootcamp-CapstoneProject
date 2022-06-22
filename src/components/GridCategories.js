@@ -26,7 +26,10 @@ const GridCategorias = () => {
     (state) => state.dasboardReducer.fetchingCategories,
   );
   const changeCategory = (category) => {
-    dispatch({ type: 'CHANGE_SELECTED_CATEGORY', selectedCategory: category });
+    dispatch({
+      type: 'CHANGE_SELECTED_CATEGORY',
+      selectedCategory: [category],
+    });
   };
 
   return (
@@ -58,7 +61,7 @@ const GridCategorias = () => {
                     onClick={() => changeCategory(slugs[0].toLowerCase())}
                     to={{
                       pathname: '/products/',
-                      search: `?category=${name.toLowerCase()}`,
+                      search: `?category=${slugs[0].toLowerCase()}`,
                     }}
                     style={{ textDecoration: 'none' }}
                   >

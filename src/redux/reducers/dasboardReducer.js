@@ -25,6 +25,7 @@ const initialState = {
   listProductSearch: [],
   listProductSearchInfo: [],
   fetchingProductSearch: false,
+  searchDone: false,
 };
 
 export default (state = initialState, action) => {
@@ -91,7 +92,7 @@ export default (state = initialState, action) => {
       return { ...state, searchText: action.searchText };
 
     case dashboardActions.GET_PRODUCT_SEARCH_REQUEST:
-      return { ...state, fetchingProductSearch: true };
+      return { ...state, fetchingProductSearch: true, searchDone: false };
     case dashboardActions.GET_PRODUCT_SEARCH_SUCCESS:
       return {
         ...state,
@@ -99,9 +100,15 @@ export default (state = initialState, action) => {
         searchResult: action.searchResult,
         listProductSearch: action.listProductSearch,
         listProductSearchInfo: action.listProductSearchInfo,
+        searchDone: true,
       };
     case dashboardActions.GET_PRODUCT_SEARCH_FAILURE:
-      return { ...state, fetchingProductSearch: false, listProductSearch: [] };
+      return {
+        ...state,
+        fetchingProductSearch: false,
+        listProductSearch: [],
+        searchDone: false,
+      };
 
     default:
       return state;

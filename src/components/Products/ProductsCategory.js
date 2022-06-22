@@ -180,10 +180,20 @@ export const ProductsCategory = () => {
               </Row>
             </Col>
             <Col lg="6" md="6" sm="6" xs="11" spaced>
-              <TextCentered>
-                Sorry, we couldn't find any matches for the categories
-                <strong> "{selectedCategory.join(', ')}"</strong>
-              </TextCentered>
+              {urlPath.split('?')[0].split(',')[1] ? (
+                <TextCentered>
+                  Sorry, we couldn't find any matches for the categories
+                  <strong>
+                    {' '}
+                    "{urlPath.split('?')[0].split(',').join(', ')}"
+                  </strong>
+                </TextCentered>
+              ) : (
+                <TextCentered>
+                  Sorry, we couldn't find any matches for the categories{' '}
+                  <strong> "{selectedCategory}"</strong>
+                </TextCentered>
+              )}
             </Col>
           </Row>
         </>

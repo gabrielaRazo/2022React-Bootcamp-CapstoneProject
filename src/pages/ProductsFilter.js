@@ -9,15 +9,13 @@ export const ProductsFilter = () => {
     (state) => state.dasboardReducer.selectedCategory,
   );
   const searchText = useSelector((state) => state.dasboardReducer.searchText);
-  const listProductSearch = useSelector(
-    (state) => state.dasboardReducer.listProductSearch,
-  );
+  const searchDone = useSelector((state) => state.dasboardReducer.searchDone);
 
   return (
     <div>
       {selectedCategory[0] && <ProductsCategory />}
-      {searchText !== '' && listProductSearch[0] && <ProductSBSearch />}
-      {!selectedCategory[0] && !listProductSearch[0] && <AllProducts />}
+      {searchText !== '' && searchDone === true && <ProductSBSearch />}
+      {!selectedCategory[0] && searchDone === false && <AllProducts />}
     </div>
   );
 };

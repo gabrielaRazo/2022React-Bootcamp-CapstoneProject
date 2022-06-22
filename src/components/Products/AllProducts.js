@@ -22,7 +22,11 @@ export const AllProducts = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
-  const urlPage = window.location.href.split('page=')[1];
+  let urlPage = window.location.href;
+  if (window.location.href) {
+    urlPage = window.location.href.split('page=')[1];
+  }
+
   const categoriesPage = useSelector(
     (state) => state.dasboardReducer.categoriesPage,
   );
