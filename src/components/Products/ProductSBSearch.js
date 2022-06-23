@@ -20,6 +20,7 @@ import {
 } from '../../styles/Grid.style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export const ProductSBSearch = () => {
   const dispatch = useDispatch();
@@ -151,6 +152,15 @@ export const ProductSBSearch = () => {
       )}
     </ContainerSpinner>
   );
+};
+
+ProductSBSearch.propTypes = {
+  selectedCategory: PropTypes.string,
+  listProductSearch: PropTypes.object,
+  listProductSearchInfo: PropTypes.object,
+  fetchingProductSearch: PropTypes.bool,
+  searchText: PropTypes.string,
+  apiRef: PropTypes.string,
 };
 
 export default ProductSBSearch;

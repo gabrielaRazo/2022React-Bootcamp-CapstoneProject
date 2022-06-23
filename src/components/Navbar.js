@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Logo,
@@ -15,11 +15,11 @@ import LogoResponsive from '../assets/logo-responsive.png';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Row } from '../styles/Home.style';
+import PropTypes from 'prop-types';
 
 const Navbar = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [inputText, setInputText] = useState('');
   const searchText = useSelector((state) => state.dasboardReducer.searchText);
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
 
@@ -51,7 +51,6 @@ const Navbar = (props) => {
   }, [apiRef]);
 
   const handleChange = (event) => {
-    setInputText(event.target.value);
     dispatch({
       type: 'CHANGE_SEARCH_VALUE',
       searchText: event.target.value,
@@ -59,7 +58,6 @@ const Navbar = (props) => {
   };
 
   const clearInput = () => {
-    setInputText('');
     dispatch({
       type: 'CHANGE_SEARCH_VALUE',
       searchText: '',
@@ -110,6 +108,11 @@ const Navbar = (props) => {
       </NavbarContainer>
     </div>
   );
+};
+
+Navbar.propTypes = {
+  searchText: PropTypes.string,
+  apiRef: PropTypes.string,
 };
 
 export default Navbar;

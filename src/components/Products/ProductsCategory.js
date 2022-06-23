@@ -20,6 +20,7 @@ import {
 } from '../../styles/Grid.style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export const ProductsCategory = () => {
   const dispatch = useDispatch();
@@ -200,6 +201,17 @@ export const ProductsCategory = () => {
       )}
     </ContainerSpinner>
   );
+};
+
+ProductsCategory.propTypes = {
+  selectedCategory: PropTypes.string,
+  listProducts: PropTypes.object,
+  filterdProductList: PropTypes.object,
+  fetchingProducts: PropTypes.bool,
+  searchText: PropTypes.string,
+  apiRef: PropTypes.string,
+  urlPage: PropTypes.number,
+  urlPath: PropTypes.string,
 };
 
 export default ProductsCategory;

@@ -10,6 +10,7 @@ import {
 import { Img, Text } from '../styles/Grid.style';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const GridCategorias = () => {
   const dispatch = useDispatch();
@@ -76,6 +77,12 @@ const GridCategorias = () => {
       </ContainerSpinner>
     </div>
   );
+};
+
+GridCategorias.propTypes = {
+  listCategories: PropTypes.object,
+  fetchingCategories: PropTypes.bool,
+  apiRef: PropTypes.string,
 };
 
 export default GridCategorias;

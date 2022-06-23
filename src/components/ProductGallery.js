@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
+import PropTypes from 'prop-types';
 
-const ProductGallery = (props) => {
+const ProductGallery = () => {
   const productDetail = useSelector(
     (state) => state.dasboardReducer.productDetail,
   );
@@ -17,6 +18,10 @@ const ProductGallery = (props) => {
       </Carousel>
     </div>
   );
+};
+
+ProductGallery.propTypes = {
+  productDetail: PropTypes.object,
 };
 
 export default ProductGallery;

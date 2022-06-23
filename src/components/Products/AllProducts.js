@@ -17,6 +17,7 @@ import {
 } from '../../styles/Grid.style';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 export const AllProducts = () => {
   const dispatch = useDispatch();
@@ -142,6 +143,15 @@ export const AllProducts = () => {
       </Row>
     </ContainerSpinner>
   );
+};
+
+AllProducts.propTypes = {
+  categoriesPage: PropTypes.number,
+  listProducts: PropTypes.object,
+  fetchingProducts: PropTypes.bool,
+  urlPage: PropTypes.string,
+  selectedCategory: PropTypes.string,
+  apiRef: PropTypes.string,
 };
 
 export default AllProducts;

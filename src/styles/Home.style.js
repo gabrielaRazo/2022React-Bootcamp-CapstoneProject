@@ -110,11 +110,11 @@ export const Button = styled.button`
 
 export const ContainerSpinner = styled.div`
   position: relative;
+
   ${({ active }) =>
     active &&
     `
-    background-color: '0xFF0E3311';
-  opacity: 0.5;
+    background-color: '0xFF0E3311'; opacity: 0.5; min-height: 100vh;
   `}
 `;
 

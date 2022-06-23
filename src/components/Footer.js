@@ -5,7 +5,7 @@ import {
   FooterWrapper,
 } from '../styles/Footer.style';
 
-const Footer = (props) => {
+const Footer = () => {
   return (
     <div>
       <FooterWrapper>

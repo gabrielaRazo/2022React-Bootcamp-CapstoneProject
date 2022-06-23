@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
-import { Col, Row, TopSpace, SectionTitle, Button } from '../styles/Home.style';
+import {
+  Col,
+  Row,
+  TopSpace,
+  SectionTitle,
+  Button,
+  ContainerSpinner,
+  Spinner,
+} from '../styles/Home.style';
 import {
   Img,
   Text,
   TextImage,
   ContainerImage,
-  Card,
   CardDashboard,
 } from '../styles/Grid.style';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const GridProductos = () => {
   const dispatch = useDispatch();
@@ -39,6 +47,7 @@ const GridProductos = () => {
     });
     navigate(`/product/${id}`);
   };
+  console.log('fetchingProducts', fetchingProducts);
 
   return (
     <div>
@@ -46,37 +55,58 @@ const GridProductos = () => {
       <TopSpace />
       <TopSpace />
 
-      <SectionTitle>Products</SectionTitle>
-      {listProducts.results && (
-        <Row centered>
-          {listProducts.results.map(
-            ({ data: { mainimage, url, category, name, price }, id }) => (
-              <Col lg="2" md="3" sm="4" xs="11" spaced>
-                <CardDashboard onClick={() => getDetailProduct(id)}>
-                  <ContainerImage>
-                    <Img src={mainimage.url} alt={url} />
-                    <TextImage>{category.slug}</TextImage>
-                  </ContainerImage>
-                  <Text>{name}</Text>
-                  <Row centered>
-                    <Text top>${price}</Text>
-                    <Button bottom>Add to Cart</Button>
-                  </Row>
-                </CardDashboard>
-              </Col>
-            ),
-          )}
-        </Row>
-      )}
-      <Row centered>
-        <Link to="/products">
+      <ContainerSpinner active={fetchingProducts}>
+        <Spinner active={fetchingProducts} viewBox="0 0 50 50">
+          <circle
+            className="path"
+            cx="25"
+            cy="25"
+            r="20"
+            fill="none"
+            strokeWidth="4"
+          />
+          <p>Loading...</p>
           <TopSpace />
-          <Button onClick={resetSearch}>View all products</Button>
-        </Link>
-      </Row>
-      <TopSpace />
+        </Spinner>
+        <SectionTitle>Products</SectionTitle>
+        {listProducts.results && (
+          <Row centered>
+            {listProducts.results.map(
+              ({ data: { mainimage, url, category, name, price }, id }) => (
+                <Col lg="2" md="3" sm="4" xs="11" spaced>
+                  <CardDashboard onClick={() => getDetailProduct(id)}>
+                    <ContainerImage>
+                      <Img src={mainimage.url} alt={url} />
+                      <TextImage>{category.slug}</TextImage>
+                    </ContainerImage>
+                    <Text>{name}</Text>
+                    <Row centered>
+                      <Text top>${price}</Text>
+                      <Button bottom>Add to Cart</Button>
+                    </Row>
+                  </CardDashboard>
+                </Col>
+              ),
+            )}
+          </Row>
+        )}
+        <Row centered>
+          <Link to="/products">
+            <TopSpace />
+            <Button onClick={resetSearch}>View all products</Button>
+          </Link>
+        </Row>
+        <TopSpace />
+      </ContainerSpinner>
     </div>
   );
+};
+
+GridProductos.propTypes = {
+  current: PropTypes.number,
+  listProducts: PropTypes.object,
+  fetchingProducts: PropTypes.bool,
+  apiRef: PropTypes.string,
 };
 
 export default GridProductos;

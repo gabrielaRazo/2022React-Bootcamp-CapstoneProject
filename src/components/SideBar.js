@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import logoSideBar from '../assets/logo-responsive.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Row } from '../styles/Home.style';
+import { ContainerSpinner, Row, Spinner } from '../styles/Home.style';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   SSidebar,
@@ -16,6 +16,7 @@ import {
   SFooter,
   IconContainer,
 } from '../styles/SideBar.style';
+import PropTypes from 'prop-types';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -156,71 +157,84 @@ const Sidebar = () => {
         </SSearchIcon>
       </SSearch>
       <Divider />
-      {listCategories.results && (
-        <>
-          {listCategories.results.map(
-            ({ data: { main_image, name }, slugs }) => (
-              <SLinkContainer
-                style={{
-                  backgroundColor: urlPath
-                    ? urlPath
-                        .split('?')[0]
-                        .split(',')
-                        .includes(slugs[0].toLowerCase())
+      <ContainerSpinner active={fetchingCategories}>
+        <Spinner active={fetchingCategories} viewBox="0 0 50 50">
+          <circle
+            className="path"
+            cx="25"
+            cy="25"
+            r="20"
+            fill="none"
+            strokeWidth="4"
+          />
+          <p>Loading...</p>
+        </Spinner>
+        {listCategories.results && (
+          <>
+            {listCategories.results.map(
+              ({ data: { main_image, name }, slugs }) => (
+                <SLinkContainer
+                  style={{
+                    backgroundColor: urlPath
+                      ? urlPath
+                          .split('?')[0]
+                          .split(',')
+                          .includes(slugs[0].toLowerCase())
+                        ? '#e6e6e6'
+                        : 'white'
+                      : selectedCategory.includes(slugs[0].toLowerCase())
                       ? '#e6e6e6'
-                      : 'white'
-                    : selectedCategory.includes(slugs[0].toLowerCase())
-                    ? '#e6e6e6'
-                    : 'white',
-                }}
-                onClick={() => selectCategories(slugs[0].toLowerCase())}
-              >
-                <SLink>
-                  <SLinkIcon>
-                    {main_image.alt === 'Bath' && (
-                      <img
-                        src={
-                          'https://img.icons8.com/dotty/80/undefined/shower-and-tub.png'
-                        }
-                      />
-                    )}
-                    {main_image.alt === 'Lighting' && (
-                      <img
-                        src={
-                          'https://img.icons8.com/dotty/80/undefined/light.png'
-                        }
-                      />
-                    )}
-                    {main_image.alt === 'Kitchen' && (
-                      <img
-                        src={
-                          'https://img.icons8.com/ios/50/undefined/kitchenwares.png'
-                        }
-                      />
-                    )}
-                    {main_image.alt === 'Furniture' && (
-                      <img
-                        src={
-                          'https://img.icons8.com/cotton/64/undefined/bath--v2.png'
-                        }
-                      />
-                    )}
-                    {main_image.alt === 'Decorate' && (
-                      <img
-                        src={
-                          'https://img.icons8.com/ios/50/undefined/home-decorations.png'
-                        }
-                      />
-                    )}
+                      : 'white',
+                  }}
+                  onClick={() => selectCategories(slugs[0].toLowerCase())}
+                >
+                  <SLink>
+                    <SLinkIcon>
+                      {main_image.alt === 'Bath' && (
+                        <img
+                          src={
+                            'https://img.icons8.com/dotty/80/undefined/shower-and-tub.png'
+                          }
+                        />
+                      )}
+                      {main_image.alt === 'Lighting' && (
+                        <img
+                          src={
+                            'https://img.icons8.com/dotty/80/undefined/light.png'
+                          }
+                        />
+                      )}
+                      {main_image.alt === 'Kitchen' && (
+                        <img
+                          src={
+                            'https://img.icons8.com/ios/50/undefined/kitchenwares.png'
+                          }
+                        />
+                      )}
+                      {main_image.alt === 'Furniture' && (
+                        <img
+                          src={
+                            'https://img.icons8.com/cotton/64/undefined/bath--v2.png'
+                          }
+                        />
+                      )}
+                      {main_image.alt === 'Decorate' && (
+                        <img
+                          src={
+                            'https://img.icons8.com/ios/50/undefined/home-decorations.png'
+                          }
+                        />
+                      )}
 
-                    <SLinkLabel>{name}</SLinkLabel>
-                  </SLinkIcon>
-                </SLink>
-              </SLinkContainer>
-            ),
-          )}
-        </>
-      )}
+                      <SLinkLabel>{name}</SLinkLabel>
+                    </SLinkIcon>
+                  </SLink>
+                </SLinkContainer>
+              ),
+            )}
+          </>
+        )}
+      </ContainerSpinner>
       <Divider />
       <IconContainer onClick={resetSelectedCategory}>
         <img src="https://img.icons8.com/ios/50/undefined/empty-filter.png" />
@@ -232,6 +246,16 @@ const Sidebar = () => {
       </SFooter>
     </SSidebar>
   );
+};
+
+Sidebar.propTypes = {
+  searchText: PropTypes.string,
+  listCategories: PropTypes.object,
+  fetchingCategories: PropTypes.bool,
+  urlPath: PropTypes.string,
+  selectedCategory: PropTypes.string,
+  categoriesPage: PropTypes.number,
+  apiRef: PropTypes.string,
 };
 
 export default Sidebar;

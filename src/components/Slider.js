@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Col,
   Row,
   TopSpace,
-  ContainerCenter,
   ContainerSpinner,
   Spinner,
 } from '../styles/Home.style';
 import {
   SlideImage,
-  StyledSlider,
   IconLeftArrow,
   IconRightArrow,
   CenteredTextTitle,
 } from '../styles/Banner.style';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import useFeaturedBanners from '../utils/hooks/useFeaturedBanners';
+import PropTypes from 'prop-types';
 
 const Slider = () => {
   useFeaturedBanners();
-  const dispatch = useDispatch();
   const [current, setCurrent] = useState(0);
   const length = 3;
 
@@ -75,6 +73,12 @@ const Slider = () => {
       </ContainerSpinner>
     </div>
   );
+};
+
+Slider.propTypes = {
+  current: PropTypes.number,
+  listBanner: PropTypes.object,
+  fetchingBanner: PropTypes.bool,
 };
 
 export default Slider;
