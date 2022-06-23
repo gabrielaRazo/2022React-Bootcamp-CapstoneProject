@@ -80,7 +80,11 @@ const Navbar = (props) => {
             </Link>
           </Col>
           <Col xs="2" collapse="lg" spaced>
-            <LogoResp src={LogoResponsive} alt="logoResponsive" />
+            <LogoResp
+              onClick={clearInput}
+              src={LogoResponsive}
+              alt="logoResponsive"
+            />
           </Col>
           <Col lg="8" md="7" sm="5" xs="5">
             <StyledInput>
