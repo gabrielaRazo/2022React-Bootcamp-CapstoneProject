@@ -8,6 +8,8 @@ import {
   LogoResp,
   StyledInput,
   SearchBtn,
+  IconContainer,
+  IconSubQuantity,
 } from '../styles/Navbar.style';
 
 import LogoImg from '../assets/logoHorizontal.png';
@@ -22,6 +24,12 @@ const Navbar = (props) => {
   const navigate = useNavigate();
   const searchText = useSelector((state) => state.dasboardReducer.searchText);
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
+  const totalProductsCart = useSelector(
+    (state) => state.dasboardReducer.totalProductsCart,
+  );
+  const shoppingCartList = useSelector(
+    (state) => state.dasboardReducer.shoppingCartList,
+  );
 
   const searchInput = () => {
     dispatch({
@@ -48,7 +56,11 @@ const Navbar = (props) => {
         searchText: window.location.pathname.split('/')[2],
       });
     }
-  }, [apiRef]);
+    dispatch({
+      type: 'GET_SHOPPING_CART_REQUEST',
+      shoppingCartList: shoppingCartList,
+    });
+  }, [apiRef, shoppingCartList]);
 
   const handleChange = (event) => {
     dispatch({
@@ -69,6 +81,8 @@ const Navbar = (props) => {
     });
     navigate(`/search`);
   };
+
+  console.log('totalProductsCart en navbar', totalProductsCart);
 
   return (
     <div>
@@ -108,7 +122,12 @@ const Navbar = (props) => {
             </StyledInput>
           </Col>
           <Col lg="1" md="2" sm="3" xs="4">
-            <IconCart disabled={true} />
+            <IconContainer>
+              <IconCart disabled={true} />
+              {totalProductsCart > 0 && (
+                <IconSubQuantity>{totalProductsCart}</IconSubQuantity>
+              )}
+            </IconContainer>
           </Col>
         </Row>
       </NavbarContainer>

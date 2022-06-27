@@ -26,6 +26,11 @@ const initialState = {
   listProductSearchInfo: [],
   fetchingProductSearch: false,
   searchDone: false,
+  //Shooping Cart
+  cartTotal: null,
+  totalProductsCart: null,
+  shoppingCartList: [],
+  fetchingInfoToCart: false,
 };
 
 export default (state = initialState, action) => {
@@ -109,6 +114,54 @@ export default (state = initialState, action) => {
         listProductSearch: [],
         searchDone: false,
       };
+
+    //shopping cart
+    case dashboardActions.GET_SHOPPING_CART_REQUEST:
+      return { ...state, fetchingInfoToCart: true };
+    case dashboardActions.GET_SHOPPING_CART_SUCCESS:
+      return {
+        ...state,
+        fetchingInfoToCart: false,
+        cartTotal: action.cartTotal,
+        totalProductsCart: action.totalProductsCart,
+      };
+    case dashboardActions.GET_SHOPPING_CART_FAILURE:
+      return { ...state, fetchingInfoToCart: false };
+
+    case dashboardActions.ADD_TO_CART_REQUEST:
+      return { ...state, fetchingAddToCart: true };
+    case dashboardActions.ADD_TO_CART_SUCCESS:
+      return {
+        ...state,
+        fetchingAddToCart: false,
+        shoppingCartList: action.shoppingCartList,
+      };
+    case dashboardActions.ADD_TO_CART_FAILURE:
+      return { ...state, fetchingAddToCart: false };
+
+    case dashboardActions.EDIT_SHOPPING_CART_REQUEST:
+      return { ...state, fetchingInfoToCart: true };
+    case dashboardActions.EDIT_SHOPPING_CART_SUCCESS:
+      return {
+        ...state,
+        fetchingInfoToCart: false,
+        shoppingCartList: action.shoppingCartList,
+      };
+    case dashboardActions.EDIT_SHOPPING_CART_FAILURE:
+      return { ...state, fetchingInfoToCart: false };
+
+    case dashboardActions.REMOVE_PRODUCT_CART_REQUEST:
+      return { ...state, fetchingInfoToCart: true };
+    case dashboardActions.REMOVE_PRODUCT_CART_SUCCESS:
+      return {
+        ...state,
+        fetchingInfoToCart: false,
+        shoppingCartList: action.shoppingCartList,
+        cartTotal: action.cartTotal,
+        totalProductsCart: action.totalProductsCart,
+      };
+    case dashboardActions.REMOVE_PRODUCT_CART_FAILURE:
+      return { ...state, fetchingInfoToCart: false };
 
     default:
       return state;

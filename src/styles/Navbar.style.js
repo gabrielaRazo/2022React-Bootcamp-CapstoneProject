@@ -125,3 +125,24 @@ export const IconCart = styled(ShoppingCart)`
     cursor: not-allowed;
   }
 `;
+
+export const IconContainer = styled.div`
+  width: 25px;
+  height: 25px;
+  position: relative;
+  margin-left: 5em;
+`;
+
+export const IconSubQuantity = styled.sub`
+  position: absolute;
+  top: 0;
+  transform: translate(50%, -50%);
+  padding: 0 6px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+  background: #ff4d4f;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px #fff;
+`;

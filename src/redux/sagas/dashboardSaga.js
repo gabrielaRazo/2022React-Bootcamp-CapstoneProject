@@ -186,3 +186,93 @@ export function* listProductSearchSaga() {
     listProductSearch,
   );
 }
+
+function* addToShoppingCart(action) {
+  try {
+    console.log('ADD_TO_CART_REQUEST action', action);
+    const listProducts = action.listProducts;
+    const productsAdded = action.shoppingCartList;
+    let total = 0;
+    if (action.cartTotal) {
+      total = action.cartTotal;
+    }
+
+    let productAdded = listProducts.find(
+      (producto) => producto.id === action.idArticle,
+    );
+
+    if (productAdded) {
+      let productExisting = productsAdded.find(
+        (productAdded) => action.idArticle === productAdded.id,
+      );
+
+      if (productExisting) {
+        const shoppingCartList = [...productsAdded];
+        for (let i = 0; i < productsAdded.length; i++) {
+          console.log('productsAdded[i]]', productsAdded[i]);
+          if (productsAdded[i].id === productExisting.id) {
+            productsAdded[i].quantity = productsAdded[i].quantity + 1;
+          }
+        }
+        total = total + productAdded.data.price;
+        const totalProductsCart = shoppingCartList
+          .map((li) => li.quantity)
+          .reduce((sum, val) => sum + val, 0);
+        yield put({
+          type: dashboardActions.ADD_TO_CART_SUCCESS,
+          shoppingCartList: [...productsAdded],
+          cartTotal: total,
+          totalProductsCart: totalProductsCart,
+        });
+        console.log('cartTotal saga', total);
+      } else {
+        productAdded.quantity = 1;
+        total = total + productAdded.price;
+        const shoppingCartList = [...productsAdded, productAdded];
+        const totalProductsCart = shoppingCartList
+          .map((li) => li.quantity)
+          .reduce((sum, val) => sum + val, 0);
+        console.log('cartTotal saga', total);
+        yield put({
+          type: dashboardActions.ADD_TO_CART_SUCCESS,
+          shoppingCartList: shoppingCartList,
+          cartTotal: total,
+          totalProductsCart: totalProductsCart,
+        });
+      }
+    } else {
+      yield put({ type: dashboardActions.ADD_TO_CART_FAILURE });
+    }
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.ADD_TO_CART_FAILURE });
+  }
+}
+export function* addToShoppingCartSaga() {
+  yield takeLatest(dashboardActions.ADD_TO_CART_REQUEST, addToShoppingCart);
+}
+
+function* getShoppingCart(action) {
+  try {
+    console.log('action', action);
+    const shoppingCartList = action.shoppingCartList;
+    const totalProductsCart = shoppingCartList
+      .map((li) => li.quantity)
+      .reduce((sum, val) => sum + val, 0);
+    const cartTotal = shoppingCartList
+      .map((item) => item.data.price * item.quantity)
+      .reduce((total, num) => total + num, 0);
+    console.log('cartTotal saga', cartTotal);
+    yield put({
+      type: dashboardActions.GET_SHOPPING_CART_SUCCESS,
+      cartTotal: cartTotal,
+      totalProductsCart: totalProductsCart,
+    });
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.GET_SHOPPING_CART_FAILURE });
+  }
+}
+export function* getShoppingCartSaga() {
+  yield takeLatest(dashboardActions.GET_SHOPPING_CART_REQUEST, getShoppingCart);
+}

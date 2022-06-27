@@ -23,10 +23,17 @@ const GridProductos = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
+  const shoppingCartList = useSelector(
+    (state) => state.dasboardReducer.shoppingCartList,
+  );
 
   useEffect(() => {
     dispatch({ type: 'GET_LIST_PRODUCTS_REQUEST', apiRef: apiRef });
-  }, [apiRef]);
+    dispatch({
+      type: 'GET_SHOPPING_CART_REQUEST',
+      shoppingCartList: shoppingCartList,
+    });
+  }, [apiRef, shoppingCartList]);
 
   const listProducts = useSelector(
     (state) => state.dasboardReducer.listProducts,
@@ -35,9 +42,25 @@ const GridProductos = () => {
     (state) => state.dasboardReducer.fetchingProducts,
   );
 
+  const totalProductsCart = useSelector(
+    (state) => state.dasboardReducer.totalProductsCart,
+  );
+
   const resetSearch = () => {
     dispatch({ type: 'GET_PRODUCT_SEARCH_FAILURE' });
   };
+
+  const addToCart = (idArticle) => {
+    console.log('idArticle', idArticle);
+    dispatch({
+      type: 'ADD_TO_CART_REQUEST',
+      idArticle,
+      listProducts: listProducts.results,
+      shoppingCartList,
+    });
+  };
+
+  console.log('shoppingCartList', shoppingCartList);
 
   const getDetailProduct = (id) => {
     dispatch({
@@ -47,7 +70,7 @@ const GridProductos = () => {
     });
     navigate(`/product/${id}`);
   };
-  console.log('fetchingProducts', fetchingProducts);
+  console.log('totalProductsCart en grid', totalProductsCart);
 
   return (
     <div>
@@ -74,15 +97,17 @@ const GridProductos = () => {
             {listProducts.results.map(
               ({ data: { mainimage, url, category, name, price }, id }) => (
                 <Col lg="2" md="3" sm="4" xs="11" spaced>
-                  <CardDashboard onClick={() => getDetailProduct(id)}>
-                    <ContainerImage>
+                  <CardDashboard>
+                    <ContainerImage onClick={() => getDetailProduct(id)}>
                       <Img src={mainimage.url} alt={url} />
                       <TextImage>{category.slug}</TextImage>
                     </ContainerImage>
-                    <Text>{name}</Text>
+                    <Text onClick={() => getDetailProduct(id)}>{name}</Text>
                     <Row centered>
                       <Text top>${price}</Text>
-                      <Button bottom>Add to Cart</Button>
+                      <Button bottom onClick={() => addToCart(id)}>
+                        Add to Cart
+                      </Button>
                     </Row>
                   </CardDashboard>
                 </Col>
