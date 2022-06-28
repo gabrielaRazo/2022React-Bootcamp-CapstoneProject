@@ -93,6 +93,7 @@ export const CartButton = styled.button`
   font-family: Montserrat;
   font-size: 16px;
   font-weight: 100;
+  cursor: pointer;
   background-color: ${colors.colors.footerBlue};
   border: 1px solid ${colors.colors.footerBlue};
   ${({ space }) => space && `margin-top:2em`};

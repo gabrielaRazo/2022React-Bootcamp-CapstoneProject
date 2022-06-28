@@ -82,8 +82,6 @@ const Navbar = (props) => {
     navigate(`/search`);
   };
 
-  console.log('totalProductsCart en navbar', totalProductsCart);
-
   return (
     <div>
       <NavbarContainer>

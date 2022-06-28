@@ -189,7 +189,6 @@ export function* listProductSearchSaga() {
 
 function* addToShoppingCart(action) {
   try {
-    console.log('ADD_TO_CART_REQUEST action', action);
     const listProducts = action.listProducts;
     const productsAdded = action.shoppingCartList;
     let total = 0;
@@ -209,7 +208,6 @@ function* addToShoppingCart(action) {
       if (productExisting) {
         const shoppingCartList = [...productsAdded];
         for (let i = 0; i < productsAdded.length; i++) {
-          console.log('productsAdded[i]]', productsAdded[i]);
           if (productsAdded[i].id === productExisting.id) {
             productsAdded[i].quantity = productsAdded[i].quantity + 1;
           }
@@ -224,7 +222,6 @@ function* addToShoppingCart(action) {
           cartTotal: total,
           totalProductsCart: totalProductsCart,
         });
-        console.log('cartTotal saga', total);
       } else {
         productAdded.quantity = 1;
         total = total + productAdded.price;
@@ -232,7 +229,7 @@ function* addToShoppingCart(action) {
         const totalProductsCart = shoppingCartList
           .map((li) => li.quantity)
           .reduce((sum, val) => sum + val, 0);
-        console.log('cartTotal saga', total);
+
         yield put({
           type: dashboardActions.ADD_TO_CART_SUCCESS,
           shoppingCartList: shoppingCartList,
@@ -254,7 +251,7 @@ export function* addToShoppingCartSaga() {
 
 function* getShoppingCart(action) {
   try {
-    console.log('action', action);
+    //console.log('action', action);
     const shoppingCartList = action.shoppingCartList;
     const totalProductsCart = shoppingCartList
       .map((li) => li.quantity)
@@ -262,7 +259,7 @@ function* getShoppingCart(action) {
     const cartTotal = shoppingCartList
       .map((item) => item.data.price * item.quantity)
       .reduce((total, num) => total + num, 0);
-    console.log('cartTotal saga', cartTotal);
+
     yield put({
       type: dashboardActions.GET_SHOPPING_CART_SUCCESS,
       cartTotal: cartTotal,
@@ -275,4 +272,114 @@ function* getShoppingCart(action) {
 }
 export function* getShoppingCartSaga() {
   yield takeLatest(dashboardActions.GET_SHOPPING_CART_REQUEST, getShoppingCart);
+}
+
+function* deleteItemCart(action) {
+  try {
+    console.log('action', action);
+    const productsAdded = action.shoppingCartList;
+    const total = action.cartTotal;
+    const totalProductsCart = action.totalProductsCart;
+    const productToDelete = productsAdded.find(
+      (product) => action.idArticle === product.id,
+    );
+    const newProducts = productsAdded.filter(
+      (product) => action.idArticle !== product.id,
+    );
+    const newTotal = total - productToDelete.price * productToDelete.quantity;
+    const newTotalProducts = totalProductsCart - productToDelete.quantity;
+
+    yield put({
+      type: dashboardActions.REMOVE_PRODUCT_CART_SUCCESS,
+      shoppingCartList: newProducts,
+      cartTotal: newTotal,
+      totalProductsCart: newTotalProducts,
+    });
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.REMOVE_PRODUCT_CART_FAILURE });
+  }
+}
+export function* deleteItemCartSaga() {
+  yield takeLatest(
+    dashboardActions.REMOVE_PRODUCT_CART_REQUEST,
+    deleteItemCart,
+  );
+}
+
+function* editItemsCart(action) {
+  try {
+    const productsAdded = action.shoppingCartList;
+    let total = 0;
+    if (action.cartTotal) {
+      total = action.cartTotal;
+    }
+    const actionToEdit = action.actionToEdit;
+
+    let productAdded = productsAdded.find(
+      (producto) => producto.id === action.idArticle,
+    );
+
+    if (actionToEdit === 'add') {
+      if (productAdded) {
+        total = total + productAdded.data.price;
+        for (let i = 0; i < productsAdded.length; i++) {
+          if (productsAdded[i].id === productAdded.id) {
+            productsAdded[i].quantity = productsAdded[i].quantity + 1;
+          }
+        }
+        const totalProductsCart = action.shoppingCartList
+          .map((li) => li.quantity)
+          .reduce((sum, val) => sum + val, 0);
+        yield put({
+          type: dashboardActions.EDIT_SHOPPING_CART_SUCCESS,
+          cartTotal: total,
+          shoppingCartList: action.shoppingCartList,
+          totalProductsCart: totalProductsCart,
+        });
+      }
+    } else if (actionToEdit === 'sub') {
+      if (productAdded) {
+        if (productAdded.quantity === 1) {
+          const newProducts = productsAdded.filter(
+            (product) => action.idArticle !== product.id,
+          );
+          total = total - productAdded.data.price;
+          const totalProductsCart = newProducts
+            .map((li) => li.quantity)
+            .reduce((sum, val) => sum + val, 0);
+          yield put({
+            type: dashboardActions.EDIT_SHOPPING_CART_SUCCESS,
+            shoppingCartList: newProducts,
+            cartTotal: total,
+            totalProductsCart: totalProductsCart,
+          });
+        } else {
+          for (let i = 0; i < productsAdded.length; i++) {
+            if (productsAdded[i].id === productAdded.id) {
+              productsAdded[i].quantity = productsAdded[i].quantity - 1;
+            }
+          }
+          total = total - productAdded.data.price;
+          console.log('total sub 1', total);
+          const totalProductsCart = productsAdded
+            .map((li) => li.quantity)
+            .reduce((sum, val) => sum + val, 0);
+
+          yield put({
+            type: dashboardActions.EDIT_SHOPPING_CART_SUCCESS,
+            shoppingCartList: productsAdded,
+            cartTotal: total,
+            totalProductsCart: totalProductsCart,
+          });
+        }
+      }
+    }
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.EDIT_SHOPPING_CART_FAILURE });
+  }
+}
+export function* editItemsCartSaga() {
+  yield takeLatest(dashboardActions.EDIT_SHOPPING_CART_REQUEST, editItemsCart);
 }

@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   CartContainer,
   TopSpace,
@@ -30,6 +31,8 @@ import {
 import { Divider } from '../styles/SideBar.style';
 
 export const CartPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const deleteIconUrl =
     'https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/';
@@ -43,6 +46,10 @@ export const CartPage = () => {
   const totalProductsCart = useSelector(
     (state) => state.dasboardReducer.totalProductsCart,
   );
+  const listProducts = useSelector(
+    (state) => state.dasboardReducer.listProducts,
+  );
+
   return (
     <div>
       <CartContainer>
@@ -100,6 +107,15 @@ export const CartPage = () => {
                               <Col lg={4} md={4}>
                                 <ContainerIcon>
                                   <IconDeleteCart
+                                    onClick={() =>
+                                      dispatch({
+                                        type: 'REMOVE_PRODUCT_CART_REQUEST',
+                                        idArticle: id,
+                                        shoppingCartList,
+                                        cartTotal,
+                                        totalProductsCart,
+                                      })
+                                    }
                                     src={
                                       deleteIconUrl +
                                       'external-delete-interface-dreamstale-lineal-dreamstale.png'
@@ -126,12 +142,35 @@ export const CartPage = () => {
                                 </Col>
                                 <Col lg={1} md={1}>
                                   <IconsContainer>
-                                    <InputIconUp>
+                                    <InputIconUp
+                                      onClick={() =>
+                                        dispatch({
+                                          type: 'EDIT_SHOPPING_CART_REQUEST',
+                                          idArticle: id,
+                                          actionToEdit: 'add',
+                                          shoppingCartList,
+                                          cartTotal,
+                                          totalProductsCart,
+                                        })
+                                      }
+                                    >
                                       <img
                                         src={`${iconsURL}/50/undefined/collapse-arrow.png`}
                                       />
                                     </InputIconUp>
-                                    <InputIconDown>
+                                    <InputIconDown
+                                      onClick={() =>
+                                        dispatch({
+                                          type: 'EDIT_SHOPPING_CART_REQUEST',
+                                          idArticle: id,
+                                          actionToEdit: 'sub',
+                                          listProducts,
+                                          shoppingCartList,
+                                          cartTotal,
+                                          totalProductsCart,
+                                        })
+                                      }
+                                    >
                                       <img
                                         src={`${iconsURL}/50/undefined/expand-arrow--v1.png`}
                                       />
@@ -206,7 +245,9 @@ export const CartPage = () => {
               </Row>
               <Row centered>
                 <Col lg={3} md={5}>
-                  <CartButton>Continue Shopping</CartButton>
+                  <CartButton onClick={() => navigate(`/home`)}>
+                    Continue Shopping
+                  </CartButton>
                 </Col>
               </Row>
             </>

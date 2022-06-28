@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   CartContainer,
   TopSpace,
@@ -33,6 +34,7 @@ import {
 import { Divider } from '../styles/SideBar.style';
 
 export const CartPageResponsive = () => {
+  const navigate = useNavigate();
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const deleteIconUrl =
     'https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/';
@@ -114,11 +116,31 @@ export const CartPageResponsive = () => {
                           </Row>
                           <CardRowTable />
                           <Row>
-                            <Col xs={8} sm={8}>
-                              <TextResponsive>Quantity: </TextResponsive>
+                            <Col xs={7} sm={7}>
+                              <TextResponsive>Quantity:</TextResponsive>
                             </Col>
-                            <Col xs={4} sm={4}>
-                              <TextResponsive>${quantity}</TextResponsive>
+                            <Col xs={4} sm={4} space>
+                              <InputContainer>
+                                <Row>
+                                  <Col xs={11} sm={11}>
+                                    <InputText>{quantity}</InputText>
+                                  </Col>
+                                  <Col xs={1} sm={1}>
+                                    <IconsContainer>
+                                      <InputIconUp>
+                                        <img
+                                          src={`${iconsURL}/50/undefined/collapse-arrow.png`}
+                                        />
+                                      </InputIconUp>
+                                      <InputIconDown>
+                                        <img
+                                          src={`${iconsURL}/50/undefined/expand-arrow--v1.png`}
+                                        />
+                                      </InputIconDown>
+                                    </IconsContainer>
+                                  </Col>
+                                </Row>
+                              </InputContainer>
                             </Col>
                           </Row>
                           <CardRowTable />
@@ -170,7 +192,9 @@ export const CartPageResponsive = () => {
               </Row>
               <Row centered>
                 <Col sm={12} xs={12}>
-                  <CartButton>Continue Shopping</CartButton>
+                  <CartButton onClick={() => navigate(`/home`)}>
+                    Continue Shopping
+                  </CartButton>
                 </Col>
               </Row>
             </>

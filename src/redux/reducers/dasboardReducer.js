@@ -146,6 +146,8 @@ export default (state = initialState, action) => {
         ...state,
         fetchingInfoToCart: false,
         shoppingCartList: action.shoppingCartList,
+        cartTotal: action.cartTotal,
+        totalProductsCart: action.totalProductsCart,
       };
     case dashboardActions.EDIT_SHOPPING_CART_FAILURE:
       return { ...state, fetchingInfoToCart: false };

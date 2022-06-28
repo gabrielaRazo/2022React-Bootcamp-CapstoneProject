@@ -51,7 +51,6 @@ const GridProductos = () => {
   };
 
   const addToCart = (idArticle) => {
-    console.log('idArticle', idArticle);
     dispatch({
       type: 'ADD_TO_CART_REQUEST',
       idArticle,
@@ -59,8 +58,6 @@ const GridProductos = () => {
       shoppingCartList,
     });
   };
-
-  console.log('shoppingCartList', shoppingCartList);
 
   const getDetailProduct = (id) => {
     dispatch({
@@ -70,7 +67,6 @@ const GridProductos = () => {
     });
     navigate(`/product/${id}`);
   };
-  console.log('totalProductsCart en grid', totalProductsCart);
 
   return (
     <div>
