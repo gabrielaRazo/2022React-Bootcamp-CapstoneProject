@@ -21,6 +21,11 @@ export const Divider = styled.div`
   background-color: ${colors.colors.lightGray};
   width: 100%;
   margin: 24px 0;
+  ${({ noSpace }) =>
+    noSpace &&
+    `
+    margin:0
+  `}
 `;
 
 export const LogoSBar = styled.div`

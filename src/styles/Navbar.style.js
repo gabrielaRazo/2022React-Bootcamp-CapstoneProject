@@ -117,13 +117,7 @@ export const IconCart = styled(ShoppingCart)`
   opacity: 0.5;
   float: right;
   margin-right: 5px;
-
-  &:focus {
-    visibility: hidden;
-  }
-  &:hover {
-    cursor: not-allowed;
-  }
+  cursor: pointer;
 `;
 
 export const IconContainer = styled.div`

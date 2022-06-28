@@ -108,7 +108,7 @@ const Navbar = (props) => {
                 <SearchInput
                   value={searchText}
                   onChange={handleChange}
-                  placeholder="Buscar ..."
+                  placeholder="What are you looking for?"
                 />
                 {searchText !== '' && (
                   <SearchBtn type="submit" value="Submit">
@@ -122,8 +122,8 @@ const Navbar = (props) => {
             </StyledInput>
           </Col>
           <Col lg="1" md="2" sm="3" xs="4">
-            <IconContainer>
-              <IconCart disabled={true} />
+            <IconContainer onClick={() => navigate(`/cart`)}>
+              <IconCart />
               {totalProductsCart > 0 && (
                 <IconSubQuantity>{totalProductsCart}</IconSubQuantity>
               )}
