@@ -21,6 +21,7 @@ import {
   InputIconUp,
   InputIconDown,
   IconsContainer,
+  TextInfo,
 } from '../styles/ProductDetail.style';
 import { Divider } from '../styles/SideBar.style';
 import Header from './header/Header';
@@ -29,7 +30,9 @@ import PropTypes from 'prop-types';
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(1);
+  const stockOnItem = useSelector((state) => state.dasboardReducer.stockOnItem);
+  const [quantity, setQuantity] = useState(stockOnItem);
+  const [showAlert, setShowAlert] = useState(false);
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const productDetail = useSelector(
@@ -38,24 +41,67 @@ const ProductDetails = () => {
   const fetchingProductDetail = useSelector(
     (state) => state.dasboardReducer.fetchingProductDetail,
   );
-
   const productId = useSelector((state) => state.dasboardReducer.productId);
+  const shoppingCartList = useSelector(
+    (state) => state.dasboardReducer.shoppingCartList,
+  );
+  const cartTotal = useSelector((state) => state.dasboardReducer.cartTotal);
+  const totalProductsCart = useSelector(
+    (state) => state.dasboardReducer.totalProductsCart,
+  );
 
   useEffect(() => {
     if (window.location.href.split('/')[4]) {
       dispatch({
         type: 'GET_PRODUCT_DETAIL_REQUEST',
         apiRef: apiRef,
+        shoppingCartList,
         productId: window.location.href.split('/')[4],
       });
     } else {
       dispatch({
         type: 'GET_PRODUCT_DETAIL_REQUEST',
         apiRef: apiRef,
+        shoppingCartList,
         productId: productId,
       });
     }
-  }, [productId]);
+    setQuantity(stockOnItem);
+  }, [productId, stockOnItem]);
+
+  const addToCart = (idArticle) => {
+    dispatch({
+      type: 'ADD_TO_CART_REQUEST',
+      idArticle,
+      listProducts: productDetail,
+      shoppingCartList,
+    });
+  };
+
+  const inputAddCart = (idArticle) => {
+    setQuantity(quantity + 1);
+    setShowAlert(false);
+    dispatch({
+      type: 'ADD_TO_CART_REQUEST',
+      idArticle,
+      listProducts: productDetail,
+      shoppingCartList,
+    });
+  };
+
+  const inputEditCart = (idArticle) => {
+    setQuantity(quantity - 1);
+    dispatch({
+      type: 'EDIT_SHOPPING_CART_REQUEST',
+      idArticle,
+      actionToEdit: 'sub',
+      listProducts: productDetail,
+      shoppingCartList,
+      cartTotal,
+      totalProductsCart,
+    });
+    setShowAlert(false);
+  };
 
   return (
     <div>
@@ -126,9 +172,9 @@ const ProductDetails = () => {
                                     <img
                                       src={`${iconsURL}/50/undefined/collapse-arrow.png`}
                                       onClick={() =>
-                                        quantity !==
-                                          productDetail[0].data.stock &&
-                                        setQuantity(quantity + 1)
+                                        quantity !== productDetail[0].data.stock
+                                          ? inputAddCart(productDetail[0].id)
+                                          : setShowAlert(true)
                                       }
                                     />
                                   </InputIconUp>
@@ -137,21 +183,29 @@ const ProductDetails = () => {
                                       src={`${iconsURL}/50/undefined/expand-arrow--v1.png`}
                                       onClick={() =>
                                         quantity > 1 &&
-                                        setQuantity(quantity - 1)
+                                        inputEditCart(productDetail[0].id)
                                       }
                                     />
                                   </InputIconDown>
                                 </IconsContainer>
                               </Col>
+                              {showAlert === true && (
+                                <TextInfo>No more stock available</TextInfo>
+                              )}
                             </Row>
                           </InputContainer>
                         </Col>
                         <Col lg={8} md={7} sm={7} xs={7} spaced>
-                          <Button>Add to Cart</Button>
+                          <Button
+                            onClick={() => addToCart(productDetail[0].id)}
+                          >
+                            Add to Cart
+                          </Button>
                         </Col>
                       </Row>
                     </CartContainer>
                     <ProductText specs>
+                      <br />
                       Stock: {productDetail[0].data.stock}
                     </ProductText>
                   </Col>

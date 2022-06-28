@@ -98,6 +98,7 @@ export const AllProducts = () => {
       type: 'GET_PRODUCT_DETAIL_REQUEST',
       apiRef: apiRef,
       productId: id,
+      shoppingCartList,
     });
     navigate(`/product/${id}`);
   };

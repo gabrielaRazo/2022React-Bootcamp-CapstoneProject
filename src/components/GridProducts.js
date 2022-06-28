@@ -42,10 +42,6 @@ const GridProductos = () => {
     (state) => state.dasboardReducer.fetchingProducts,
   );
 
-  const totalProductsCart = useSelector(
-    (state) => state.dasboardReducer.totalProductsCart,
-  );
-
   const resetSearch = () => {
     dispatch({ type: 'GET_PRODUCT_SEARCH_FAILURE' });
   };
@@ -64,6 +60,7 @@ const GridProductos = () => {
       type: 'GET_PRODUCT_DETAIL_REQUEST',
       apiRef: apiRef,
       productId: id,
+      shoppingCartList,
     });
     navigate(`/product/${id}`);
   };

@@ -124,6 +124,11 @@ function* getProductDetail(action) {
         type: dashboardActions.GET_PRODUCT_DETAIL_SUCCESS,
         productDetail: productDetail,
       });
+      yield put({
+        type: dashboardActions.CHANGE_STOCK_ON_CART_REQUEST,
+        shoppingCartList: action.shoppingCartList,
+        idArticle: productId,
+      });
     } else {
       yield put({ type: dashboardActions.GET_PRODUCT_DETAIL_FAILURE });
     }
@@ -361,7 +366,6 @@ function* editItemsCart(action) {
             }
           }
           total = total - productAdded.data.price;
-          console.log('total sub 1', total);
           const totalProductsCart = productsAdded
             .map((li) => li.quantity)
             .reduce((sum, val) => sum + val, 0);
@@ -382,4 +386,33 @@ function* editItemsCart(action) {
 }
 export function* editItemsCartSaga() {
   yield takeLatest(dashboardActions.EDIT_SHOPPING_CART_REQUEST, editItemsCart);
+}
+
+function* changeStockItemCart(action) {
+  try {
+    //console.log('action', action);
+    const shoppingCartList = action.shoppingCartList;
+    const idArticle = action.idArticle;
+    let stockOnItem = 0;
+
+    for (let i = 0; i < shoppingCartList.length; i++) {
+      if (idArticle === shoppingCartList[i].id) {
+        stockOnItem = shoppingCartList[i].quantity;
+      }
+    }
+
+    yield put({
+      type: dashboardActions.CHANGE_STOCK_ON_CART_SUCCESS,
+      stockOnItem: stockOnItem,
+    });
+  } catch (error) {
+    //console.log(error);
+    yield put({ type: dashboardActions.CHANGE_STOCK_ON_CART_FAILURE });
+  }
+}
+export function* changeStockItemCartSaga() {
+  yield takeLatest(
+    dashboardActions.CHANGE_STOCK_ON_CART_REQUEST,
+    changeStockItemCart,
+  );
 }

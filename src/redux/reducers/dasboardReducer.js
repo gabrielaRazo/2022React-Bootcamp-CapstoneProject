@@ -31,6 +31,7 @@ const initialState = {
   totalProductsCart: null,
   shoppingCartList: [],
   fetchingInfoToCart: false,
+  stockOnItem: 0,
 };
 
 export default (state = initialState, action) => {
@@ -164,6 +165,17 @@ export default (state = initialState, action) => {
       };
     case dashboardActions.REMOVE_PRODUCT_CART_FAILURE:
       return { ...state, fetchingInfoToCart: false };
+
+    case dashboardActions.CHANGE_STOCK_ON_CART_REQUEST:
+      return { ...state, fetchingProductDetail: true };
+    case dashboardActions.CHANGE_STOCK_ON_CART_SUCCESS:
+      return {
+        ...state,
+        fetchingProductDetail: false,
+        stockOnItem: action.stockOnItem,
+      };
+    case dashboardActions.CHANGE_STOCK_ON_CART_FAILURE:
+      return { ...state, fetchingProductDetail: false };
 
     default:
       return state;

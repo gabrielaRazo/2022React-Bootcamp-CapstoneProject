@@ -126,6 +126,7 @@ export const ProductsCategory = () => {
       type: 'GET_PRODUCT_DETAIL_REQUEST',
       apiRef: apiRef,
       productId: id,
+      shoppingCartList,
     });
     navigate(`/product/${id}`);
   };

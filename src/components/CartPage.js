@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -27,12 +27,15 @@ import {
   InputIconDown,
   InputIconUp,
   InputText,
+  TextInfo,
 } from '../styles/ProductDetail.style';
 import { Divider } from '../styles/SideBar.style';
 
 export const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showAlert, setShowAlert] = useState(false);
+  const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const deleteIconUrl =
     'https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/';
@@ -49,6 +52,46 @@ export const CartPage = () => {
   const listProducts = useSelector(
     (state) => state.dasboardReducer.listProducts,
   );
+
+  const getDetailProduct = (id) => {
+    dispatch({
+      type: 'GET_PRODUCT_DETAIL_REQUEST',
+      apiRef: apiRef,
+      productId: id,
+      shoppingCartList,
+    });
+    navigate(`/product/${id}`);
+  };
+
+  const editItemsCart = (type, id) => {
+    let productAdded = shoppingCartList.find((producto) => producto.id === id);
+    if (type === 'add') {
+      if (productAdded.quantity < productAdded.data.stock) {
+        dispatch({
+          type: 'EDIT_SHOPPING_CART_REQUEST',
+          idArticle: id,
+          actionToEdit: 'add',
+          shoppingCartList,
+          cartTotal,
+          totalProductsCart,
+        });
+        setShowAlert(false);
+      } else {
+        setShowAlert(true);
+      }
+    } else if (type === 'sub') {
+      dispatch({
+        type: 'EDIT_SHOPPING_CART_REQUEST',
+        idArticle: id,
+        actionToEdit: 'sub',
+        listProducts,
+        shoppingCartList,
+        cartTotal,
+        totalProductsCart,
+      });
+      setShowAlert(false);
+    }
+  };
 
   return (
     <div>
@@ -96,7 +139,7 @@ export const CartPage = () => {
                   <Row centered>
                     {shoppingCartList.map(
                       ({
-                        data: { mainimage, url, price, name },
+                        data: { mainimage, url, price, name, stock },
                         id,
                         quantity,
                       }) => (
@@ -124,12 +167,18 @@ export const CartPage = () => {
                                 </ContainerIcon>
                               </Col>
                               <Col lg={8} md={8}>
-                                <Img src={mainimage.url} alt={url} />
+                                <Img
+                                  onClick={() => getDetailProduct(id)}
+                                  src={mainimage.url}
+                                  alt={url}
+                                />
                               </Col>
                             </Row>
                           </Col>
                           <Col lg={3} md={3}>
-                            <Text>{name}</Text>
+                            <Text onClick={() => getDetailProduct(id)}>
+                              {name}
+                            </Text>
                           </Col>
                           <Col lg={2} md={2}>
                             <Text>${price}</Text>
@@ -143,33 +192,14 @@ export const CartPage = () => {
                                 <Col lg={1} md={1}>
                                   <IconsContainer>
                                     <InputIconUp
-                                      onClick={() =>
-                                        dispatch({
-                                          type: 'EDIT_SHOPPING_CART_REQUEST',
-                                          idArticle: id,
-                                          actionToEdit: 'add',
-                                          shoppingCartList,
-                                          cartTotal,
-                                          totalProductsCart,
-                                        })
-                                      }
+                                      onClick={() => editItemsCart('add', id)}
                                     >
                                       <img
                                         src={`${iconsURL}/50/undefined/collapse-arrow.png`}
                                       />
                                     </InputIconUp>
                                     <InputIconDown
-                                      onClick={() =>
-                                        dispatch({
-                                          type: 'EDIT_SHOPPING_CART_REQUEST',
-                                          idArticle: id,
-                                          actionToEdit: 'sub',
-                                          listProducts,
-                                          shoppingCartList,
-                                          cartTotal,
-                                          totalProductsCart,
-                                        })
-                                      }
+                                      onClick={() => editItemsCart('sub', id)}
                                     >
                                       <img
                                         src={`${iconsURL}/50/undefined/expand-arrow--v1.png`}
@@ -177,6 +207,9 @@ export const CartPage = () => {
                                     </InputIconDown>
                                   </IconsContainer>
                                 </Col>
+                                {showAlert === true && (
+                                  <TextInfo>No more stock available</TextInfo>
+                                )}
                               </Row>
                             </InputContainer>
                           </Col>

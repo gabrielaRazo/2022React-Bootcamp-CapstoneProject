@@ -112,6 +112,7 @@ export const Button = styled.button`
     font-size: 28px;
     height: 40px;
   }
+  cursor: pointer;
 `;
 
 export const InputIconUp = styled.div`
@@ -154,4 +155,22 @@ export const InputContainer = styled.div`
 
 export const IconsContainer = styled.div`
   margin-top: -1.2em;
+`;
+
+export const TextInfo = styled.span`
+  color: red;
+  font-size: 10px;
+  text-align: center;
+  margin: -1em;
+  font-weight: 300;
+  @media (min-width: 425px) and (max-width: 1020px) {
+    padding-left: 10px;
+    margin-top: -1.5em;
+  }
+  @media (min-width: 2200px) and (max-width: 2560px) {
+    margin: 0;
+  }
+  @media (min-width: 320px) and (max-width: 420px) {
+    margin-top: -1.5em;
+  }
 `;

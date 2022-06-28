@@ -1,15 +1,12 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   CartContainer,
   TopSpace,
   IconDeleteCart,
-  ContainerIcon,
   CartTitle,
-  CartTextTable,
   CartSpaceTable,
-  ContainerFloatRight,
   CartTextTableLeft,
   CartTextRight,
   CartTextLeft,
@@ -22,7 +19,6 @@ import {
   CardRowTable,
   TextResponsive,
 } from '../styles/Cart.style';
-import { Text } from '../styles/Grid.style';
 import { Col, ContainerSpinner, Img, Row, Spinner } from '../styles/Home.style';
 import {
   IconsContainer,
@@ -30,11 +26,14 @@ import {
   InputIconDown,
   InputIconUp,
   InputText,
+  TextInfo,
 } from '../styles/ProductDetail.style';
 import { Divider } from '../styles/SideBar.style';
 
 export const CartPageResponsive = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showAlert, setShowAlert] = useState(false);
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const deleteIconUrl =
     'https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/';
@@ -48,6 +47,40 @@ export const CartPageResponsive = () => {
   const totalProductsCart = useSelector(
     (state) => state.dasboardReducer.totalProductsCart,
   );
+  const listProducts = useSelector(
+    (state) => state.dasboardReducer.listProducts,
+  );
+
+  const editItemsCart = (type, id) => {
+    let productAdded = shoppingCartList.find((producto) => producto.id === id);
+    if (type === 'add') {
+      if (productAdded.quantity < productAdded.data.stock) {
+        dispatch({
+          type: 'EDIT_SHOPPING_CART_REQUEST',
+          idArticle: id,
+          actionToEdit: 'add',
+          shoppingCartList,
+          cartTotal,
+          totalProductsCart,
+        });
+        setShowAlert(false);
+      } else {
+        setShowAlert(true);
+      }
+    } else if (type === 'sub') {
+      dispatch({
+        type: 'EDIT_SHOPPING_CART_REQUEST',
+        idArticle: id,
+        actionToEdit: 'sub',
+        listProducts,
+        shoppingCartList,
+        cartTotal,
+        totalProductsCart,
+      });
+      setShowAlert(false);
+    }
+  };
+
   return (
     <div>
       <CartContainer>
@@ -127,18 +160,25 @@ export const CartPageResponsive = () => {
                                   </Col>
                                   <Col xs={1} sm={1}>
                                     <IconsContainer>
-                                      <InputIconUp>
+                                      <InputIconUp
+                                        onClick={() => editItemsCart('add', id)}
+                                      >
                                         <img
                                           src={`${iconsURL}/50/undefined/collapse-arrow.png`}
                                         />
                                       </InputIconUp>
-                                      <InputIconDown>
+                                      <InputIconDown
+                                        onClick={() => editItemsCart('sub', id)}
+                                      >
                                         <img
                                           src={`${iconsURL}/50/undefined/expand-arrow--v1.png`}
                                         />
                                       </InputIconDown>
                                     </IconsContainer>
                                   </Col>
+                                  {showAlert === true && (
+                                    <TextInfo>No more stock available</TextInfo>
+                                  )}
                                 </Row>
                               </InputContainer>
                             </Col>
