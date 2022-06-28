@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logoSideBar from '../assets/logo-responsive.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { ContainerSpinner, Row, Spinner } from '../styles/Home.style';
+import { Col, ContainerSpinner, Row, Spinner } from '../styles/Home.style';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   SSidebar,
@@ -15,8 +15,14 @@ import {
   SSearch,
   SFooter,
   IconContainer,
+  IconContainerCart,
+  IconCartSB,
+  TextSBIcon,
+  IconSBQuantity,
+  IconSBSubQuantity,
 } from '../styles/SideBar.style';
 import PropTypes from 'prop-types';
+import { IconCart, IconSubQuantity } from '../styles/Navbar.style';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -30,6 +36,9 @@ const Sidebar = () => {
     (state) => state.dasboardReducer.categoriesPage,
   );
   const searchText = useSelector((state) => state.dasboardReducer.searchText);
+  const shoppingCartList = useSelector(
+    (state) => state.dasboardReducer.shoppingCartList,
+  );
 
   useEffect(() => {
     dispatch({
@@ -37,7 +46,11 @@ const Sidebar = () => {
       apiRef: apiRef,
       page: categoriesPage,
     });
-  }, [apiRef]);
+    dispatch({
+      type: 'GET_SHOPPING_CART_REQUEST',
+      shoppingCartList: shoppingCartList,
+    });
+  }, [apiRef, shoppingCartList]);
 
   const searchClickHandler = (element) => {
     if (element.target.value) {
@@ -84,6 +97,11 @@ const Sidebar = () => {
   const fetchingCategories = useSelector(
     (state) => state.dasboardReducer.fetchingCategories,
   );
+  const totalProductsCart = useSelector(
+    (state) => state.dasboardReducer.totalProductsCart,
+  );
+
+  console.log('totalProductsCart', totalProductsCart);
 
   const searchInput = () => {
     if (searchText) {
@@ -156,6 +174,34 @@ const Sidebar = () => {
           />
         </SSearchIcon>
       </SSearch>
+      <br />
+      <br />
+      <Row>
+        <Col lg={10} md={10} sm={9} xs={9}>
+          <Row>
+            <Col lg={3} md={5} sm={6} xs={6}>
+              <IconContainerCart onClick={() => navigate(`/cart`)}>
+                <IconCartSB />
+                {totalProductsCart > 0 && (
+                  <IconSBSubQuantity>
+                    <span>{''}</span>
+                  </IconSBSubQuantity>
+                )}
+              </IconContainerCart>
+            </Col>
+            <Col lg={9} md={7} sm={6} xs={6}>
+              <TextSBIcon>Cart</TextSBIcon>
+            </Col>
+          </Row>
+        </Col>
+        <Col lg={2} md={2} sm={3} xs={3}>
+          {totalProductsCart > 0 && (
+            <IconSBQuantity onClick={() => navigate(`/cart`)}>
+              X{totalProductsCart}
+            </IconSBQuantity>
+          )}
+        </Col>
+      </Row>
       <Divider />
       <ContainerSpinner active={fetchingCategories}>
         <Spinner active={fetchingCategories} viewBox="0 0 50 50">
@@ -238,7 +284,7 @@ const Sidebar = () => {
       <Divider />
       <IconContainer onClick={resetSelectedCategory}>
         <img src="https://img.icons8.com/ios/50/undefined/empty-filter.png" />
-        <span>Limpiar filtros</span>
+        <span>No Filters</span>
       </IconContainer>
       <Divider />
       <SFooter>

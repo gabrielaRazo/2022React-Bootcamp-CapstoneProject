@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import * as colors from './Colors.style';
 
+import { ShoppingCart } from '@styled-icons/feather/ShoppingCart';
+
 export const SSidebar = styled.div`
   height: 100%;
   padding: 24px;
@@ -48,10 +50,75 @@ export const IconContainer = styled.div`
   }
   span {
     font-size: 15px;
-    margin-left: 5px;
+    margin-left: 10px;
   }
   cursor: pointer;
   color: ${colors.colors.inputGray};
+`;
+
+export const IconContainerCart = styled.div`
+  position: relative;
+  span {
+    font-size: 15px;
+    margin-left: 10px;
+  }
+  cursor: pointer;
+  color: ${colors.colors.inputGray};
+`;
+
+export const IconCartSB = styled(ShoppingCart)`
+  width: 25px;
+  height: 25px;
+  margin-left: 15px;
+  cursor: pointer;
+`;
+
+export const TextSBIcon = styled.span`
+  font-weight: 100;
+  font-size: 20px;
+  @media (min-width: 1024px) and (max-width: 1440px) {
+    margin-left: 0.5em;
+  }
+  @media (min-width: 1540px) and (max-width: 2560px) {
+    margin-left: -1em;
+  }
+`;
+
+export const IconSBQuantity = styled.div`
+  width: 100%;
+  background-color: ${colors.colors.hoverInput};
+  transform: translate(0%, 100%);
+  cursor: pointer;
+  border-radius: 5px;
+  color: white;
+  text-align: center;
+`;
+
+export const IconSBSubQuantity = styled.sub`
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, 10%);
+  color: #fff;
+  width: 6px;
+  min-width: 6px;
+  height: 6px;
+  text-align: center;
+  background: #ff4d4f;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px #fff;
+`;
+
+export const IconSubQuantitySB = styled.sub`
+  position: absolute;
+  top: 0;
+  transform: translate(0%, -80%);
+  padding: 0 6px;
+  color: #fff;
+  line-height: 10px;
+  text-align: center;
+  background: #ff4d4f;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px #fff;
 `;
 
 export const SLinkContainer = styled.div`

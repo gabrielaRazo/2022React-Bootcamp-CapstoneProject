@@ -133,7 +133,6 @@ export const IconSubQuantity = styled.sub`
   transform: translate(50%, -50%);
   padding: 0 6px;
   color: #fff;
-  font-size: 12px;
   line-height: 20px;
   text-align: center;
   background: #ff4d4f;

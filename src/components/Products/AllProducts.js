@@ -79,6 +79,20 @@ export const AllProducts = () => {
     (state) => state.dasboardReducer.fetchingProducts,
   );
 
+  const shoppingCartList = useSelector(
+    (state) => state.dasboardReducer.shoppingCartList,
+  );
+
+  const addToCart = (idArticle) => {
+    console.log('idArticle', idArticle);
+    dispatch({
+      type: 'ADD_TO_CART_REQUEST',
+      idArticle,
+      listProducts: listProducts.results,
+      shoppingCartList,
+    });
+  };
+
   const getDetailProduct = (id) => {
     dispatch({
       type: 'GET_PRODUCT_DETAIL_REQUEST',
@@ -107,15 +121,19 @@ export const AllProducts = () => {
           {listProducts.results.map(
             ({ data: { mainimage, url, category, name, price }, id }) => (
               <Col lg="2" md="3" sm="4" xs="11" spaced>
-                <Card onClick={() => getDetailProduct(id)}>
-                  <ContainerImage>
+                <Card>
+                  <ContainerImage onClick={() => getDetailProduct(id)}>
                     <Img products src={mainimage.url} alt={url} />
                     <TextImage>{category.slug}</TextImage>
                   </ContainerImage>
                   <Text>{name}</Text>
                   <Row centered>
-                    <Text top>${price}</Text>
-                    <Button bottom>Add to Cart</Button>
+                    <Text top onClick={() => getDetailProduct(id)}>
+                      ${price}
+                    </Text>
+                    <Button bottom onClick={() => addToCart(id)}>
+                      Add to Cart
+                    </Button>
                   </Row>
                 </Card>
               </Col>
