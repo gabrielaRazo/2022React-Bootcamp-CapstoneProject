@@ -28,6 +28,13 @@ export const Divider = styled.div`
     `
     margin:0
   `}
+  ${({ color }) =>
+    color &&
+    ` 
+    margin: 0px 0;
+    height: 0.5px;
+    background-color: black;
+  `}
 `;
 
 export const LogoSBar = styled.div`

@@ -240,7 +240,9 @@ export const CartPage = () => {
                     </Row>
                     <Divider noSpace />
                     <Row>
-                      <CartButton space>Checkout</CartButton>
+                      <CartButton space onClick={() => navigate(`/checkout`)}>
+                        Checkout
+                      </CartButton>
                     </Row>
                   </ContainerFloatRight>
                 </Col>
@@ -262,7 +264,9 @@ export const CartPage = () => {
                   <Divider noSpace />
                   <Row centered>
                     <Col md={6}>
-                      <CartButton space>Checkout</CartButton>
+                      <CartButton onClick={() => navigate(`/checkout`)} space>
+                        Checkout
+                      </CartButton>
                     </Col>
                   </Row>
                 </Col>
@@ -278,7 +282,7 @@ export const CartPage = () => {
               </Row>
               <Row centered>
                 <Col lg={3} md={5}>
-                  <CartButton onClick={() => navigate(`/home`)}>
+                  <CartButton onClick={() => navigate(`/products`)}>
                     Continue Shopping
                   </CartButton>
                 </Col>

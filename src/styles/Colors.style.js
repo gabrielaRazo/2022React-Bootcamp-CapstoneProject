@@ -2,6 +2,7 @@ export const colors = {
   titleBlue: '#485461',
   subBlue: '#659fc0',
   hoverSubBlue: '#659fc092',
+  tableCardBlue: '#DDEDF5',
   lightGray: '#e6e6e6',
   hoverLightGray: '#5554559b',
   inputGray: '#777',
@@ -10,4 +11,5 @@ export const colors = {
   footerBlue: '#3b6f8d',
   white: '#fff',
   productsText: '#707070',
+  dividerColor: '#AAAAAA',
 };

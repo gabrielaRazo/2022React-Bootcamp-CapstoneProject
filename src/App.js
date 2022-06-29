@@ -1,16 +1,11 @@
 import './App.css';
-import {
-  BrowserRouter,
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ProductList from './pages/ProductList';
 import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
 import ProductSearch from './pages/ProductSearch';
 import ShoppingCartPage from './pages/ShoppingCartPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 function App() {
   return (
@@ -27,6 +22,7 @@ function App() {
           <Route path="/products/:page" element={<ProductList />} />
           <Route path="/search/:searchTerm" element={<ProductSearch />} />
           <Route path="/search" element={<ProductSearch />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>

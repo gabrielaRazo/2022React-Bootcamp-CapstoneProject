@@ -213,7 +213,9 @@ export const CartPageResponsive = () => {
                 </Row>
                 <Divider noSpace />
                 <Row>
-                  <CartButton space>Checkout</CartButton>
+                  <CartButton space onClick={() => navigate(`/checkout`)}>
+                    Checkout
+                  </CartButton>
                 </Row>
               </Col>
             </>
@@ -227,7 +229,7 @@ export const CartPageResponsive = () => {
               </Row>
               <Row centered>
                 <Col sm={12} xs={12}>
-                  <CartButton onClick={() => navigate(`/home`)}>
+                  <CartButton onClick={() => navigate(`/products`)}>
                     Continue Shopping
                   </CartButton>
                 </Col>
