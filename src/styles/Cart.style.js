@@ -131,6 +131,7 @@ export const TextResponsive = styled.span`
   font-size: 14px;
   font-weight: 200;
   padding: 10px;
+  cursor: pointer;
 `;
 
 export const ContainerLargeScreens = styled.div`

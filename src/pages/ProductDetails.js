@@ -32,7 +32,6 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
   const stockOnItem = useSelector((state) => state.dasboardReducer.stockOnItem);
   const [quantity, setQuantity] = useState(stockOnItem);
-  const [showAlert, setShowAlert] = useState(false);
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const productDetail = useSelector(
@@ -69,18 +68,8 @@ const ProductDetails = () => {
     setQuantity(stockOnItem);
   }, [productId, stockOnItem]);
 
-  const addToCart = (idArticle) => {
-    dispatch({
-      type: 'ADD_TO_CART_REQUEST',
-      idArticle,
-      listProducts: productDetail,
-      shoppingCartList,
-    });
-  };
-
   const inputAddCart = (idArticle) => {
     setQuantity(quantity + 1);
-    setShowAlert(false);
     dispatch({
       type: 'ADD_TO_CART_REQUEST',
       idArticle,
@@ -100,7 +89,6 @@ const ProductDetails = () => {
       cartTotal,
       totalProductsCart,
     });
-    setShowAlert(false);
   };
 
   return (
@@ -172,9 +160,9 @@ const ProductDetails = () => {
                                     <img
                                       src={`${iconsURL}/50/undefined/collapse-arrow.png`}
                                       onClick={() =>
-                                        quantity !== productDetail[0].data.stock
-                                          ? inputAddCart(productDetail[0].id)
-                                          : setShowAlert(true)
+                                        quantity !==
+                                          productDetail[0].data.stock &&
+                                        inputAddCart(productDetail[0].id)
                                       }
                                     />
                                   </InputIconUp>
@@ -189,18 +177,34 @@ const ProductDetails = () => {
                                   </InputIconDown>
                                 </IconsContainer>
                               </Col>
-                              {showAlert === true && (
+                              {(productDetail[0].data.stock === quantity) ===
+                                true && (
                                 <TextInfo>No more stock available</TextInfo>
                               )}
                             </Row>
                           </InputContainer>
                         </Col>
                         <Col lg={8} md={7} sm={7} xs={7} spaced>
-                          <Button
-                            onClick={() => addToCart(productDetail[0].id)}
-                          >
-                            Add to Cart
-                          </Button>
+                          {productDetail[0].data.stock === quantity ? (
+                            <Button
+                              disabled
+                              onClick={() =>
+                                quantity !== productDetail[0].data.stock &&
+                                inputAddCart(productDetail[0].id)
+                              }
+                            >
+                              Add to Cart
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() =>
+                                quantity !== productDetail[0].data.stock &&
+                                inputAddCart(productDetail[0].id)
+                              }
+                            >
+                              Add to Cart
+                            </Button>
+                          )}
                         </Col>
                       </Row>
                     </CartContainer>

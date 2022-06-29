@@ -33,7 +33,6 @@ import { Divider } from '../styles/SideBar.style';
 export const CartPageResponsive = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showAlert, setShowAlert] = useState(false);
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const deleteIconUrl =
     'https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/';
@@ -63,9 +62,6 @@ export const CartPageResponsive = () => {
           cartTotal,
           totalProductsCart,
         });
-        setShowAlert(false);
-      } else {
-        setShowAlert(true);
       }
     } else if (type === 'sub') {
       dispatch({
@@ -77,7 +73,6 @@ export const CartPageResponsive = () => {
         cartTotal,
         totalProductsCart,
       });
-      setShowAlert(false);
     }
   };
 
@@ -109,7 +104,7 @@ export const CartPageResponsive = () => {
                 <Col lg={8} md={12}>
                   {shoppingCartList.map(
                     ({
-                      data: { mainimage, url, price, name },
+                      data: { mainimage, url, price, name, stock },
                       id,
                       quantity,
                     }) => (
@@ -126,7 +121,7 @@ export const CartPageResponsive = () => {
                             </Col>
                             <CardRowTable />
                             <Col xs={12} sm={12} spaced>
-                              <Img src={mainimage.url} alt={url} />
+                              <Img clickable src={mainimage.url} alt={url} />
                             </Col>
                             <CardRowTable />
                           </Row>
@@ -176,7 +171,7 @@ export const CartPageResponsive = () => {
                                       </InputIconDown>
                                     </IconsContainer>
                                   </Col>
-                                  {showAlert === true && (
+                                  {quantity === stock && (
                                     <TextInfo>No more stock available</TextInfo>
                                   )}
                                 </Row>

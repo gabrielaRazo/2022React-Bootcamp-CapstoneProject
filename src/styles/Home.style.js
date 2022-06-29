@@ -164,6 +164,7 @@ export const TextCentered = styled.p`
 
 export const Img = styled.img`
   width: 100%;
+  ${({ clickable }) => clickable && `cursor: pointer`};
 `;
 
 export const PaginationContainer = styled.div`

@@ -34,7 +34,6 @@ import { Divider } from '../styles/SideBar.style';
 export const CartPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showAlert, setShowAlert] = useState(false);
   const apiRef = useSelector((state) => state.dasboardReducer.apiRef);
   const iconsURL = 'https://img.icons8.com/ios-filled';
   const deleteIconUrl =
@@ -75,9 +74,6 @@ export const CartPage = () => {
           cartTotal,
           totalProductsCart,
         });
-        setShowAlert(false);
-      } else {
-        setShowAlert(true);
       }
     } else if (type === 'sub') {
       dispatch({
@@ -89,7 +85,6 @@ export const CartPage = () => {
         cartTotal,
         totalProductsCart,
       });
-      setShowAlert(false);
     }
   };
 
@@ -168,6 +163,7 @@ export const CartPage = () => {
                               </Col>
                               <Col lg={8} md={8}>
                                 <Img
+                                  clickable
                                   onClick={() => getDetailProduct(id)}
                                   src={mainimage.url}
                                   alt={url}
@@ -176,7 +172,10 @@ export const CartPage = () => {
                             </Row>
                           </Col>
                           <Col lg={3} md={3}>
-                            <Text onClick={() => getDetailProduct(id)}>
+                            <Text
+                              clickable
+                              onClick={() => getDetailProduct(id)}
+                            >
                               {name}
                             </Text>
                           </Col>
@@ -207,7 +206,8 @@ export const CartPage = () => {
                                     </InputIconDown>
                                   </IconsContainer>
                                 </Col>
-                                {showAlert === true && (
+
+                                {quantity === stock && (
                                   <TextInfo>No more stock available</TextInfo>
                                 )}
                               </Row>

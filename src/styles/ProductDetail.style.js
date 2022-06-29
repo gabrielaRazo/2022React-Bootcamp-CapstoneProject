@@ -106,13 +106,22 @@ export const Button = styled.button`
   font-size: 15px;
   font-weight: 400;
   border-radius: 5px;
+  cursor: pointer;
   background-color: ${colors.colors.subBlue};
   font-family: 'Montserrat', sans-serif;
   @media (min-width: 1441px) and (max-width: 2560px) {
     font-size: 28px;
     height: 40px;
   }
-  cursor: pointer;
+  ${({ disabled }) =>
+    disabled &&
+    `color: #00000040;
+    border-color: #d9d9d9;
+    background: #f5f5f5;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: not-allowed;
+  `}
 `;
 
 export const InputIconUp = styled.div`
