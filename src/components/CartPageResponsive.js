@@ -113,6 +113,15 @@ export const CartPageResponsive = () => {
                           <Row>
                             <Col xs={11} sm={11} spaced>
                               <IconDeleteCart
+                                onClick={() =>
+                                  dispatch({
+                                    type: 'REMOVE_PRODUCT_CART_REQUEST',
+                                    idArticle: id,
+                                    shoppingCartList,
+                                    cartTotal,
+                                    totalProductsCart,
+                                  })
+                                }
                                 src={
                                   deleteIconUrl +
                                   'external-delete-interface-dreamstale-lineal-dreamstale.png'
