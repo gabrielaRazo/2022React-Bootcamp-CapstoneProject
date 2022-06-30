@@ -101,8 +101,6 @@ const Sidebar = () => {
     (state) => state.dasboardReducer.totalProductsCart,
   );
 
-  console.log('totalProductsCart', totalProductsCart);
-
   const searchInput = () => {
     if (searchText) {
       dispatch({
