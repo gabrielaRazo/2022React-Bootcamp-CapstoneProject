@@ -92,25 +92,29 @@ export const SectionTitle = styled.h1`
 export const Button = styled.button`
   border-radius: 10px;
   background-color: ${colors.colors.subBlue};
-  border-color: ${colors.colors.subBlue};
+  border: 1px solid ${colors.colors.hoverInput};
   color: white;
   font-size: 14px;
   font-family: 'Montserrat', sans-serif;
   padding: 10px;
+  ${({ bottom }) =>
+    bottom && `position: absolute; bottom: 0; margin-bottom:10px;`};
+
+  cursor: pointer;
 
   &:hover {
     background-color: ${colors.colors.hoverSubBlue};
-    border-color: ${colors.colors.hoverSubBlue};
+    border: 1px solid ${colors.colors.hoverSubBlue};
   }
 `;
 
 export const ContainerSpinner = styled.div`
   position: relative;
+
   ${({ active }) =>
     active &&
     `
-    background-color: '0xFF0E3311';
-  opacity: 0.5;
+    background-color: '0xFF0E3311'; opacity: 0.5; min-height: 100vh;
   `}
 `;
 
@@ -176,6 +180,7 @@ export const PaginationContainer = styled.div`
     height: 24px;
     line-height: 24px;
     vertical-align: top;
+    cursor: pointer;
   }
   p {
     box-sizing: border-box;

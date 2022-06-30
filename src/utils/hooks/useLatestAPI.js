@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
+import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../constants';
 
 const INITIAL_API_METADATA = { ref: null, isLoading: true };
 
@@ -21,10 +21,9 @@ export function useLatestAPI() {
         setApiMetadata({ ref, isLoading: false });
       } catch (err) {
         setApiMetadata({ ref: null, isLoading: false });
-        console.error(err);
+        //console.error(err);
       }
     }
-
     getAPIMetadata();
 
     return () => {

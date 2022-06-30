@@ -1,8 +1,11 @@
-import { useState, useEffect } from "react";
-import { API_BASE_URL } from "../constants";
-import { useLatestAPI } from "./useLatestAPI";
+import { useState, useEffect } from 'react';
+import { API_BASE_URL } from '../constants';
+import { useLatestAPI } from './useLatestAPI';
+import { useDispatch } from 'react-redux';
 
-export function useFeaturedBanners() {
+function useFeaturedBanners() {
+  const dispatch = useDispatch();
+
   const { ref: apiRef, isLoading: isApiMetadataLoading } = useLatestAPI();
   const [featuredBanners, setFeaturedBanners] = useState(() => ({
     data: {},
@@ -18,22 +21,25 @@ export function useFeaturedBanners() {
 
     async function getFeaturedBanners() {
       try {
-        setFeaturedBanners({ data: {}, isLoading: true });
-
+        dispatch({ type: 'GET_API_REF', apiRef: apiRef });
         const response = await fetch(
           `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${encodeURIComponent(
-            '[[at(document.type, "banner")]]'
+            '[[at(document.type, "banner")]]',
           )}&lang=en-us&pageSize=5`,
           {
             signal: controller.signal,
-          }
+          },
         );
-        const data = await response.json();
 
-        setFeaturedBanners({ data, isLoading: false });
+        if (response.status === 200) {
+          const data = await response.json();
+          dispatch({ type: 'GET_LIST_BANNER_SUCCESS', listBanner: data });
+        } else {
+          dispatch({ type: 'GET_LIST_BANNER_FAILURE', listBanner: [] });
+        }
       } catch (err) {
-        setFeaturedBanners({ data: {}, isLoading: false });
-        console.error(err);
+        dispatch({ type: 'GET_LIST_BANNER_FAILURE', listBanner: [] });
+        //console.error(err);
       }
     }
 
@@ -46,3 +52,5 @@ export function useFeaturedBanners() {
 
   return featuredBanners;
 }
+
+export default useFeaturedBanners;

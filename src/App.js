@@ -1,19 +1,33 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter,
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import ProductList from './pages/ProductList';
-import Header from './pages/header/Header';
-import Footer from './components/Footer';
 import Home from './pages/Home';
+import ProductDetails from './pages/ProductDetails';
+import ProductSearch from './pages/ProductSearch';
 
 function App() {
   return (
     <div>
-      <Router>
+      <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route exact path="/products" element={<ProductList />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/products" element={<ProductList />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/products/:selectedCategory" element={<ProductList />} />
+          <Route path="/products/:searchTerm" element={<ProductList />} />
+          <Route path="/products/:page" element={<ProductList />} />
+          <Route path="/search/:searchTerm" element={<ProductSearch />} />
+          <Route path="/search" element={<ProductSearch />} />
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
