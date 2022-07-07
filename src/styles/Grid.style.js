@@ -44,6 +44,7 @@ export const Text = styled.p`
   font-weight: 300;
   ${({ top }) => top && `position: absolute;  top: 80%; `};
   color: ${colors.colors.titleBlue};
+  ${({ clickable }) => clickable && `cursor: pointer`};
 `;
 
 export const TextImage = styled.p`

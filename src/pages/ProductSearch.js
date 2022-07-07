@@ -39,12 +39,25 @@ const ProductSearch = () => {
   const fetchingProductSearch = useSelector(
     (state) => state.dasboardReducer.fetchingProductSearch,
   );
+  const shoppingCartList = useSelector(
+    (state) => state.dasboardReducer.shoppingCartList,
+  );
+
+  const addToCart = (idArticle) => {
+    dispatch({
+      type: 'ADD_TO_CART_REQUEST',
+      idArticle,
+      listProducts: searchResult.results,
+      shoppingCartList,
+    });
+  };
 
   const getDetailProduct = (id) => {
     dispatch({
       type: 'GET_PRODUCT_DETAIL_REQUEST',
       apiRef: apiRef,
       productId: id,
+      shoppingCartList,
     });
     navigate(`/product/${id}`);
   };
@@ -88,15 +101,17 @@ const ProductSearch = () => {
                 {searchResult.results.map(
                   ({ data: { mainimage, url, category, name, price }, id }) => (
                     <Col lg="2" md="3" sm="4" xs="11" spaced>
-                      <CardDashboard onClick={() => getDetailProduct(id)}>
-                        <ContainerImage>
+                      <CardDashboard>
+                        <ContainerImage onClick={() => getDetailProduct(id)}>
                           <Img src={mainimage.url} alt={url} />
                           <TextImage>{category.slug}</TextImage>
                         </ContainerImage>
-                        <Text>{name}</Text>
+                        <Text onClick={() => getDetailProduct(id)}>{name}</Text>
                         <Row centered>
                           <Text top>${price}</Text>
-                          <Button bottom>Add to Cart</Button>
+                          <Button bottom onClick={() => addToCart(id)}>
+                            Add to Cart
+                          </Button>
                         </Row>
                       </CardDashboard>
                     </Col>

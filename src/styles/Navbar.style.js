@@ -117,13 +117,7 @@ export const IconCart = styled(ShoppingCart)`
   opacity: 0.5;
   float: right;
   margin-right: 5px;
-
-  &:focus {
-    visibility: hidden;
-  }
-  &:hover {
-    cursor: not-allowed;
-  }
+  cursor: pointer;
 `;
 
 export const IconContainer = styled.div`
@@ -139,7 +133,6 @@ export const IconSubQuantity = styled.sub`
   transform: translate(50%, -50%);
   padding: 0 6px;
   color: #fff;
-  font-size: 12px;
   line-height: 20px;
   text-align: center;
   background: #ff4d4f;

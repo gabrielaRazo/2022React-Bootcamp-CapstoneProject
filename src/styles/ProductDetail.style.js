@@ -106,12 +106,22 @@ export const Button = styled.button`
   font-size: 15px;
   font-weight: 400;
   border-radius: 5px;
+  cursor: pointer;
   background-color: ${colors.colors.subBlue};
   font-family: 'Montserrat', sans-serif;
   @media (min-width: 1441px) and (max-width: 2560px) {
     font-size: 28px;
     height: 40px;
   }
+  ${({ disabled }) =>
+    disabled &&
+    `color: #00000040;
+    border-color: #d9d9d9;
+    background: #f5f5f5;
+    text-shadow: none;
+    box-shadow: none;
+    cursor: not-allowed;
+  `}
 `;
 
 export const InputIconUp = styled.div`
@@ -154,4 +164,22 @@ export const InputContainer = styled.div`
 
 export const IconsContainer = styled.div`
   margin-top: -1.2em;
+`;
+
+export const TextInfo = styled.span`
+  color: red;
+  font-size: 10px;
+  text-align: center;
+  margin: -1em;
+  font-weight: 300;
+  @media (min-width: 425px) and (max-width: 1020px) {
+    padding-left: 10px;
+    margin-top: -1.5em;
+  }
+  @media (min-width: 2200px) and (max-width: 2560px) {
+    margin: 0;
+  }
+  @media (min-width: 320px) and (max-width: 420px) {
+    margin-top: -1.5em;
+  }
 `;

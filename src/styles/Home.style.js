@@ -34,7 +34,7 @@ const media = {
     }
     `,
   md: (styles) => `
-    @media (min-width: 768px) and (max-width: 1024px){
+    @media (min-width: 768px) and (max-width: 1023px){
         ${styles}
     }
     `,
@@ -44,7 +44,7 @@ const media = {
     }
     `,
   lg: (styles) => `
-    @media only screen and (min-width:1025px){
+  @media (min-width: 1024px) and (max-width: 2570px) {
         ${styles}
     }
     `,
@@ -60,10 +60,10 @@ export const Col = styled.div`
   @media (min-width: 481px) and (max-width: 768px) {
     ${({ sm }) => sm && getWidthStrings(sm)};
   }
-  @media (min-width: 768px) and (max-width: 1024px) {
+  @media (min-width: 768px) and (max-width: 1023px) {
     ${({ md }) => md && getWidthStrings(md)};
   }
-  @media only screen and (min-width: 1025px) {
+  @media (min-width: 1024px) and (max-width: 2570px) {
     ${({ lg }) => lg && getWidthStrings(lg)};
   }
   ${(props) => props.collapse && media[props.collapse](`display:none;`)};
@@ -164,6 +164,7 @@ export const TextCentered = styled.p`
 
 export const Img = styled.img`
   width: 100%;
+  ${({ clickable }) => clickable && `cursor: pointer`};
 `;
 
 export const PaginationContainer = styled.div`
